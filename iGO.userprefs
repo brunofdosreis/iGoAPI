@@ -1,0 +1,25 @@
+﻿<Properties StartupItem="API/API.csproj">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="API/Services/HelloService.cs">
+    <Files>
+      <File FileName="API/Global.asax.cs" Line="65" Column="7" />
+      <File FileName="API/Services/HelloService.cs" Line="20" Column="27" />
+      <File FileName="Repositories/Extensions/BaseEntityExtension.cs" Line="15" Column="3" />
+      <File FileName="Repositories/Repositories/BaseRepository.cs" Line="16" Column="29" />
+    </Files>
+    <Pads>
+      <Pad Id="MonoDevelop.Debugger.WatchPad">
+        <State />
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore>
+      <Breakpoint file="/Users/brunofdosreis/Projects/iGO/GIT/iGO/API/Global.asax.cs" line="66" column="1" />
+      <Breakpoint file="/Users/brunofdosreis/Projects/iGO/GIT/iGO/API/Services/HelloService.cs" line="38" column="1" />
+      <Breakpoint file="/Users/brunofdosreis/Projects/iGO/GIT/iGO/API/Services/HelloService.cs" line="24" column="1" />
+      <Breakpoint file="/Users/brunofdosreis/Projects/iGO/GIT/iGO/API/Services/HelloService.cs" line="20" column="1" />
+    </BreakpointStore>
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
