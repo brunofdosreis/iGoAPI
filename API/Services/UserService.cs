@@ -15,7 +15,7 @@ namespace iGO.API.Services
 		{
 			User User = Request.GetEntity();
 
-			// TODO: Comunicação com o Facebook Obter Nome, Email, Foto de Perfil, Data de Nascimento, Gênero
+			// TODO: Comunicação com o Facebook - Obter Nome, Email, Foto de Perfil, Data de Nascimento, Gênero
 
 			User.Save();
 
@@ -52,6 +52,21 @@ namespace iGO.API.Services
 			User User = base.GetAuthenticatedUser();
 
 			return new GetUserPreferencesResponse(User.UserPreferences);
+		}
+
+		[CustomAuthenticateToken]
+		public object Put(PutUserPreferencesRequest Request)
+		{
+			UserPreferences UserPreferences = Request.GetEntity();
+
+			User User = base.GetAuthenticatedUser();
+
+			User.UserPreferences.AgeStart = UserPreferences.AgeStart;
+			User.UserPreferences.AgeEnd = UserPreferences.AgeEnd;
+
+			User.UserPreferences.Save();
+
+			return new BaseResponse();
 		}
 	}
 }

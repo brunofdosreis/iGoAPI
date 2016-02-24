@@ -98,6 +98,9 @@
     <Compile Include="Models\User\GetUserResponse.cs" />
     <Compile Include="Models\User\GetUserPreferencesRequest.cs" />
     <Compile Include="Models\User\GetUserPreferencesResponse.cs" />
+    <Compile Include="Models\User\PutUserPreferencesRequest.cs" />
+    <Compile Include="Models\Event\GetEventsRequest.cs" />
+    <Compile Include="Models\Event\GetEventsResponse.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Services\" />
@@ -107,6 +110,7 @@
     <Folder Include="Authentication\" />
     <Folder Include="Models\Base\" />
     <Folder Include="Models\User\" />
+    <Folder Include="Models\Event\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Model\Domain.csproj">

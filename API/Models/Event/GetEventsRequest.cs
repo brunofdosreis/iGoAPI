@@ -6,8 +6,8 @@ using iGO.Domain.Entities;
 
 namespace iGO.API.Models
 {
-	[Route("/user/preferences")]
-	public class GetUserPreferencesRequest : BaseRequest<Object>, IReturn<GetUserPreferencesResponse>
+	[Route("/events")]
+	public class GetEventsRequest : BaseRequest<Object>, IReturn<GetEventsResponse>
 	{
 		public override Object GetEntity()
 		{
