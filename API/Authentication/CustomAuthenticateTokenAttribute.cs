@@ -39,15 +39,17 @@ namespace ServiceStack.ServiceInterface
 		{
 			var authKey = req.Headers["Auth-Key"];
 
+			if (!authKey.IsNullOrEmpty () && (authKey.Equals ("Android") || authKey.Equals ("iOS")))
+			{
+				return;
+			}
+
 			if (authKey.IsNullOrEmpty() ||
 				!new BaseRepository<User>().List(x => x.FacebookToken == authKey).Any()) {
 
 				// TODO: Verificar se o token é válido no Facebook e remover verificação abaixo
 
-				if (authKey.IsNullOrEmpty() || (!authKey.Equals("Android") && !authKey.Equals("iOS")))
-				{
-					throw new HttpError (HttpStatusCode.Unauthorized);
-				}
+				throw new HttpError (HttpStatusCode.Unauthorized);
 			}
 		}
 	}
