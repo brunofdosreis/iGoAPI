@@ -16,7 +16,7 @@ namespace iGO.API
 		public class AppHost : AppHostBase
 		{
 			//Tell ServiceStack the name of your application and where to find your services
-			public AppHost() : base("iGO Hello Service", 
+			public AppHost() : base("iGO-API", 
 				typeof(HelloService).Assembly
 			) { }
 

@@ -6,7 +6,7 @@ namespace iGO.API.Models
 {
 	public class GetUserPreferencesResponse : BaseResponse
 	{
-		public new Object data;
+		public new Object data { get; set; }
 
 		public GetUserPreferencesResponse(UserPreferences UserPreferences) : base()
 		{

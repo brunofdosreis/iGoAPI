@@ -6,7 +6,7 @@ namespace iGO.API.Models
 {
 	public class PostUserResponse : BaseResponse
 	{
-		public new Object data;
+		public new Object data { get; set; }
 
 		public PostUserResponse(User User) : base()
 		{

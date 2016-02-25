@@ -6,7 +6,7 @@ namespace iGO.API.Models
 {
 	public class HelloResponse : BaseResponse
 	{
-		public new Object data;
+		public new Object data { get; set; }
 
 		public HelloResponse(Hello Hello) : base()
 		{

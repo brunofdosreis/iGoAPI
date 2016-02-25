@@ -44,7 +44,7 @@ namespace ServiceStack.ServiceInterface
 
 				// TODO: Verificar se o token é válido no Facebook e remover verificação abaixo
 
-				if ((!authKey.Equals ("Android") && !authKey.Equals ("iOS")))
+				if (authKey.IsNullOrEmpty() || (!authKey.Equals("Android") && !authKey.Equals("iOS")))
 				{
 					throw new HttpError (HttpStatusCode.Unauthorized);
 				}
