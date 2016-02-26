@@ -14,8 +14,9 @@ namespace iGO.Repositories.Mappings
 			Map(x => x.Created);
 			Map(x => x.AgeStart);
 			Map(x => x.AgeEnd);
+			Map(x => x.Gender);
 
-			References(x => x.User);
+			References(x => x.User).Cascade.All();
 		}
 	}
 }

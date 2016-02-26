@@ -2,6 +2,8 @@
 using System.Net;
 using System.Linq;
 
+using Facebook;
+
 using ServiceStack.Web;
 
 using iGO.Domain.Entities;
@@ -47,9 +49,16 @@ namespace ServiceStack.ServiceInterface
 			if (authKey.IsNullOrEmpty() ||
 				!new BaseRepository<User>().List(x => x.FacebookToken == authKey).Any()) {
 
-				// TODO: Verificar se o token é válido no Facebook e remover verificação abaixo
+				try {
+					
+					var client = new FacebookClient(authKey);
 
-				throw new HttpError (HttpStatusCode.Unauthorized);
+					client.Get("me", new { fields = new[] { "id", "email", "name", "birthday", "picture", "gender" }});
+
+				} catch (FacebookOAuthException) {
+
+					throw new HttpError(HttpStatusCode.Unauthorized);
+				}
 			}
 		}
 	}

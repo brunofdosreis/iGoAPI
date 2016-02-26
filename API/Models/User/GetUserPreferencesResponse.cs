@@ -17,11 +17,13 @@ namespace iGO.API.Models
 		{
 			public int ageStart { get; set; }
 			public int ageEnd { get; set; }
+			public string gender { get; set; }
 
 			public Object(UserPreferences UserPreferences)
 			{
 				ageStart = UserPreferences.AgeStart;
 				ageEnd = UserPreferences.AgeEnd;
+				gender = UserPreferences.Gender;
 			}
 		}
 	}

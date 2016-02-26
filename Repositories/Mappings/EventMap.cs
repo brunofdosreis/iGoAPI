@@ -15,8 +15,9 @@ namespace iGO.Repositories.Mappings
 			Map(x => x.FacebookId);
 			Map(x => x.Title);
 			Map(x => x.Description);
+			Map(x => x.Date);
 
-			HasMany(x => x.User);
+			HasMany(x => x.User).Cascade.All();
 		}
 	}
 }

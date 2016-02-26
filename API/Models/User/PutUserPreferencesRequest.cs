@@ -11,6 +11,7 @@ namespace iGO.API.Models
 	{
 		public int ageStart { get; set; }
 		public int ageEnd { get; set; }
+		public string gender { get; set; }
 
 		public override UserPreferences GetEntity()
 		{
@@ -18,6 +19,7 @@ namespace iGO.API.Models
 
 			UserPreferences.AgeStart = ageStart;
 			UserPreferences.AgeEnd = ageEnd;
+			UserPreferences.Gender = gender;
 
 			return UserPreferences;
 		}

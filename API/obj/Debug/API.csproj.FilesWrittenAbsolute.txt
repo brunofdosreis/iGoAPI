@@ -17,3 +17,4 @@
 /Users/brunofdosreis/Projects/iGO/GIT/iGO/API/bin/Repositories.dll
 /Users/brunofdosreis/Projects/iGO/GIT/iGO/API/bin/Repositories.dll.mdb
 /Users/brunofdosreis/Projects/iGO/GIT/iGO/API/bin/MySql.Data.dll
+/Users/brunofdosreis/Projects/iGO/GIT/iGO/API/bin/Facebook.dll

@@ -63,6 +63,11 @@ namespace iGO.API
 						//call default exception handler or prepare your own custom response
 						//return DtoUtils.CreateErrorResponse(request, exception);
 
+						if (exception.GetType() == typeof(ServiceStack.HttpError))
+						{
+							throw exception;
+						}
+
 						throw new HttpError(HttpStatusCode.InternalServerError);
 					});
 

@@ -58,6 +58,10 @@
     <Reference Include="NHibernate">
       <HintPath>..\packages\NHibernate.4.0.4.4000\lib\net40\NHibernate.dll</HintPath>
     </Reference>
+    <Reference Include="Facebook">
+      <HintPath>..\packages\Facebook.7.0.6\lib\net45\Facebook.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
@@ -92,7 +96,6 @@
     <Compile Include="Services\MatchService.cs" />
     <Compile Include="Services\MessageService.cs" />
     <Compile Include="Models\User\PostUserRequest.cs" />
-    <Compile Include="Models\User\PostUserResponse.cs" />
     <Compile Include="Models\User\PutUserRequest.cs" />
     <Compile Include="Models\User\GetUserRequest.cs" />
     <Compile Include="Models\User\GetUserResponse.cs" />

@@ -28,7 +28,8 @@ namespace iGO.API.Models
 						{
 							ID = _event.Id,
 							title = _event.Title,
-							desciption = _event.Description
+							desciption = _event.Description,
+							date = _event.Date
 						}
 					);
 				}
@@ -41,6 +42,7 @@ namespace iGO.API.Models
 				public int ID { get; set; }
 				public string title { get; set; }
 				public string desciption { get; set; }
+				public DateTime date { get; set; }
 			}
 		}
 	}

@@ -14,9 +14,9 @@ namespace iGO.Repositories.Mappings
 			Map(x => x.Created);
 			Map(x => x.Text);
 
-			References(x => x.Match);
-			References(x => x.FromUser);
-			References(x => x.ToUser);
+			References(x => x.Match).Cascade.All();
+			References(x => x.FromUser).Cascade.All();
+			References(x => x.ToUser).Cascade.All();
 		}
 	}
 }

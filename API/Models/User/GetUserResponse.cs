@@ -18,6 +18,7 @@ namespace iGO.API.Models
 		{
 			public string email { get; set; }
 			public string name { get; set; }
+			public string gender { get; set; }
 			public IEnumerable<Picture> pictures { get; set; }
 			public IEnumerable<Event> events { get; set; }
 
@@ -25,6 +26,7 @@ namespace iGO.API.Models
 			{
 				email = User.Email;
 				name = User.Name;
+				gender = User.Gender;
 
 				List<Picture> _pictures = new List<Picture>();
 
@@ -49,7 +51,8 @@ namespace iGO.API.Models
 						{
 							ID = _event.Id,
 							title = _event.Title,
-							desciption = _event.Description
+							desciption = _event.Description,
+							date = _event.Date
 						}
 					);
 				}
@@ -69,6 +72,7 @@ namespace iGO.API.Models
 				public int ID { get; set; }
 				public string title { get; set; }
 				public string desciption { get; set; }
+				public DateTime date { get; set; }
 			}
 		}
 	}

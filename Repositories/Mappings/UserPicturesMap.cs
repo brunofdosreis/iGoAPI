@@ -15,7 +15,7 @@ namespace iGO.Repositories.Mappings
 			Map(x => x.Picture);
 			Map(x => x.IsDefault);
 
-			References(x => x.User);
+			References(x => x.User).Cascade.All();
 		}
 	}
 }

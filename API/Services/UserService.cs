@@ -1,5 +1,11 @@
-﻿using System.Linq;
+﻿using System;
+using System.Net;
+using System.Linq;
+using System.Collections.Generic;
 
+using Facebook;
+
+using ServiceStack;
 using ServiceStack.ServiceInterface;
 
 using iGO.API.Models;
@@ -15,11 +21,59 @@ namespace iGO.API.Services
 		{
 			User User = Request.GetEntity();
 
-			// TODO: Comunicação com o Facebook - Obter Nome, Email, Foto de Perfil, Data de Nascimento, Gênero
+			// TODO: Salvar a foto do perfil localmente
+
+			try {
+
+				string accessToken = User.FacebookToken;
+
+				FacebookClient client = new FacebookClient(accessToken);
+
+				dynamic me = client.Get("me", new { fields = new[] { "id", "email", "name", "birthday", "picture", "gender" }});
+
+				ulong facebookId = ulong.Parse(me.id);
+
+				User = new BaseRepository<User>().List(x => x.FacebookId == facebookId).FirstOrDefault();
+
+				if (User == null)
+				{
+					User = new User();
+
+					User.FacebookId = facebookId;
+
+					User.FacebookToken = accessToken;
+
+					User.Email = me.email;
+
+					User.Name = me.name;
+
+					User.Birthday = DateTime.ParseExact(me.birthday, "MM/dd/yyyy", null);
+
+					User.Gender = me.gender;
+
+					List<UserPictures> UserPictures = new List<UserPictures>();
+
+					UserPictures.Add(new UserPictures {
+						Picture = me.picture.data.url,
+						IsDefault = true,
+						User = User
+					});
+
+					User.UserPictures = UserPictures;
+
+				} else {
+
+					User.FacebookToken = accessToken;
+				}
+
+			} catch (FacebookOAuthException) {
+
+				throw new HttpError(HttpStatusCode.Unauthorized);
+			}
 
 			User.Save();
 
-			return new PostUserResponse(User);
+			return new BaseResponse();
 		}
 
 		[CustomAuthenticateToken]
@@ -43,6 +97,11 @@ namespace iGO.API.Services
 		{
 			User User = Request.GetEntity();
 
+			if (User == null)
+			{
+				User = base.GetAuthenticatedUser();
+			}
+
 			return new GetUserResponse(User);
 		}
 
@@ -61,8 +120,14 @@ namespace iGO.API.Services
 
 			User User = base.GetAuthenticatedUser();
 
+			if (User.UserPreferences == null)
+			{
+				User.UserPreferences = new UserPreferences() { User = User };
+			}
+
 			User.UserPreferences.AgeStart = UserPreferences.AgeStart;
 			User.UserPreferences.AgeEnd = UserPreferences.AgeEnd;
+			User.UserPreferences.Gender = UserPreferences.Gender;
 
 			User.UserPreferences.Save();
 

@@ -12,19 +12,20 @@ namespace iGO.Repositories.Mappings
 		{
 			Id(x => x.Id);
 			Map(x => x.Created);
+			Map(x => x.FacebookId);
 			Map(x => x.FacebookToken);
 			Map(x => x.Email);
 			Map(x => x.Name);
 			Map(x => x.Birthday);
+			Map(x => x.Gender);
 
-			References(x => x.UserPreferences);
+			References(x => x.UserPreferences).Cascade.All();
 
-			HasMany(x => x.UserPictures);
+			HasMany(x => x.UserPictures).Cascade.All();
 
-			HasManyToMany(x => x.Event)
-				.Table("UserEvent");
+			HasManyToMany(x => x.Event).Table("UserEvent").Cascade.All();
 
-			HasMany(x => x.Match);
+			HasMany(x => x.Match).Cascade.All();
 		}
 	}
 }

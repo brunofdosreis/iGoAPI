@@ -12,15 +12,16 @@ namespace iGO.Repositories.Mappings
 		{
 			Id(x => x.Id);
 			Map(x => x.Created);
-			Map(x => x.IsMatch);
+			Map(x => x.IsFirstUserMatch);
+			Map(x => x.IsSecondUserMatch);
 			Map(x => x.DateFirstUser);
 			Map(x => x.DateSecondUser);
 
-			References(x => x.FirstUser);
-			References(x => x.SecondUser);
-			References(x => x.Event);
+			References(x => x.FirstUser).Cascade.All();
+			References(x => x.SecondUser).Cascade.All();
+			References(x => x.Event).Cascade.All();
 
-			HasMany(x => x.Message);
+			HasMany(x => x.Message).Cascade.All();
 		}
 	}
 }
