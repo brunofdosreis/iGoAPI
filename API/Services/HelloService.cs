@@ -7,7 +7,6 @@ using iGO.Repositories.Extensions;
 
 namespace iGO.API.Services
 {
-	[CustomAuthenticateToken]
 	public class HelloService : BaseService
 	{
 		public object Any(HelloRequest request)

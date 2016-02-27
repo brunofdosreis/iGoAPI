@@ -41,24 +41,23 @@ namespace ServiceStack.ServiceInterface
 		{
 			var authKey = req.Headers["Auth-Key"];
 
-			if (!authKey.IsNullOrEmpty () && (authKey.Equals ("Android") || authKey.Equals ("iOS")))
-			{
-				return;
-			}
-
-			if (authKey.IsNullOrEmpty() ||
-				!new BaseRepository<User>().List(x => x.FacebookToken == authKey).Any()) {
+			if (!authKey.IsNullOrEmpty() &&
+				new BaseRepository<User>().List(x => x.FacebookToken == authKey).Any()) {
 
 				try {
 					
 					var client = new FacebookClient(authKey);
 
-					client.Get("me", new { fields = new[] { "id", "email", "name", "birthday", "picture", "gender" }});
+					client.Get("me", new { fields = new[] { "id", "email", "name", "birthday", "picture", "gender", "albums", "events" }});
 
 				} catch (FacebookOAuthException) {
 
 					throw new HttpError(HttpStatusCode.Unauthorized);
 				}
+
+			} else {
+
+				throw new HttpError(HttpStatusCode.Unauthorized);
 			}
 		}
 	}

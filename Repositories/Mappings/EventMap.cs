@@ -14,10 +14,10 @@ namespace iGO.Repositories.Mappings
 			Map(x => x.Created);
 			Map(x => x.FacebookId);
 			Map(x => x.Title);
-			Map(x => x.Description);
+			Map(x => x.Description).CustomSqlType("nvarchar (4000)");
 			Map(x => x.Date);
 
-			HasMany(x => x.User).Cascade.All();
+			HasManyToMany(x => x.User).Table("UserEvent").Cascade.All();
 		}
 	}
 }

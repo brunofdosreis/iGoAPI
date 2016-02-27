@@ -104,6 +104,8 @@
     <Compile Include="Models\User\PutUserPreferencesRequest.cs" />
     <Compile Include="Models\Event\GetEventsRequest.cs" />
     <Compile Include="Models\Event\GetEventsResponse.cs" />
+    <Compile Include="Models\Event\GetEventUsersRequest.cs" />
+    <Compile Include="Models\Event\GetEventUsersResponse.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Services\" />
