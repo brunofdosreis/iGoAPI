@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 
 using iGO.Domain.Entities;
@@ -34,7 +35,7 @@ namespace iGO.API.Models
 					);
 				}
 
-				events = _events;
+				events = _events.OrderByDescending(x => x.date);
 			}
 
 			public class Event

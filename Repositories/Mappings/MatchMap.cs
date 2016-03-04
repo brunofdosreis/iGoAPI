@@ -12,8 +12,8 @@ namespace iGO.Repositories.Mappings
 		{
 			Id(x => x.Id);
 			Map(x => x.Created);
-			Map(x => x.IsFirstUserMatch);
-			Map(x => x.IsSecondUserMatch);
+			Map(x => x.IsFirstUserLike);
+			Map(x => x.IsSecondUserLike);
 			Map(x => x.DateFirstUser);
 			Map(x => x.DateSecondUser);
 

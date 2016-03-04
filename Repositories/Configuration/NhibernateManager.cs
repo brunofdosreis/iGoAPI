@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Data;
+using System.Reflection;
 using System.Configuration;
 
 using NHibernate;
@@ -17,7 +18,7 @@ namespace iGO.Repositories.Configuration
 		{
 			if (Session != null)
 			{
-				//Session.Close();
+				Session.Close();
 
 				Session = null;
 			}
@@ -29,10 +30,8 @@ namespace iGO.Repositories.Configuration
 					)
 				)
 				.Mappings(m => m.FluentMappings.AddFromAssembly(Assembly.GetExecutingAssembly()))
-				.ExposeConfiguration(c => new SchemaExport(c).Create(true, true))
-				.BuildSessionFactory()
-				.OpenSession();
-				//.Close();
+				.ExposeConfiguration(cfg => new SchemaExport(cfg).Create(true, true))
+				.BuildSessionFactory();
 		}
 
 		public static ISession GetSession()
@@ -46,6 +45,7 @@ namespace iGO.Repositories.Configuration
 						)
 					)
 					.Mappings(m => m.FluentMappings.AddFromAssembly(Assembly.GetExecutingAssembly()))
+					.ExposeConfiguration(cfg => cfg.SetProperty(NHibernate.Cfg.Environment.CommandTimeout, "180"))
 					.BuildSessionFactory()
 					.OpenSession();
 			}
