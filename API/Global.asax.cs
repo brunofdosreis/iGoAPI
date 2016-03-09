@@ -17,8 +17,19 @@ namespace iGO.API
 		{
 			//Tell ServiceStack the name of your application and where to find your services
 			public AppHost() : base("iGO-API", 
-				typeof(HelloService).Assembly
+				typeof(EventService).Assembly,
+				typeof(HelloService).Assembly,
+				//typeof(MatchService).Assembly,
+				//typeof(MessageService).Assembly,
+				typeof(UserService).Assembly
 			) { }
+
+			public override RouteAttribute[] GetRouteAttributes(Type requestType)
+			{
+				var routes = base.GetRouteAttributes(requestType);
+				routes.Each(x => x.Path = "/api" + x.Path);
+				return routes;
+			}
 
 			public override void Configure(Funq.Container container)
 			{
@@ -30,6 +41,17 @@ namespace iGO.API
 					if (apiKey == null || !Clients.VerifyKey(apiKey))
 					{
 						throw new HttpError(HttpStatusCode.Forbidden);
+					}
+				});
+
+				this.GlobalRequestFilters.Add((req, res, obj) => {
+
+					try
+					{
+						string Version = ((BaseRequest)obj).Version;
+					}
+					catch (Exception e)
+					{
 					}
 				});
 

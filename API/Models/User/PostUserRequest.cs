@@ -6,7 +6,7 @@ using iGO.Domain.Entities;
 
 namespace iGO.API.Models
 {
-	[Route("/user")]
+	[Route("/{Version}/user")]
 	public class PostUserRequest : BaseRequest<User>, IReturn<BaseResponse>
 	{
 		public string facebookToken { get; set; }

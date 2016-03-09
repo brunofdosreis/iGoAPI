@@ -6,7 +6,7 @@ using iGO.Domain.Entities;
 
 namespace iGO.API.Models
 {
-	[Route("/hello")]
+	[Route("/{Version}/hello")]
 	public class HelloRequest : BaseRequest<Hello>, IReturn<HelloResponse>
 	{
 		public string name { get; set; }

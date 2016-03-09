@@ -7,7 +7,7 @@ using iGO.Repositories.Extensions;
 
 namespace iGO.API.Models
 {
-	[Route("/user/{ID}")]
+	[Route("/{Version}/user/{ID}")]
 	public class GetUserRequest : BaseRequest<User>, IReturn<GetUserResponse>
 	{
 		public int ID { get; set; }

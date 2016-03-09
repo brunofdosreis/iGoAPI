@@ -7,7 +7,7 @@ using iGO.Repositories.Extensions;
 
 namespace iGO.API.Models
 {
-	[Route("/user")]
+	[Route("/{Version}/user")]
 	public class PutUserRequest : BaseRequest<UserPictures>, IReturn<BaseResponse>
 	{
 		public int defaultPictureID { get; set; }

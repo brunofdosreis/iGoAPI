@@ -2,12 +2,15 @@
 
 namespace iGO.API.Models
 {
-	public abstract class BaseRequest<T>
+	public abstract class BaseRequest<T> : BaseRequest
 	{
-		public BaseRequest()
-		{
-		}
+		public virtual string Version { get; set; }
 
 		public abstract T GetEntity();
+	}
+
+	public interface BaseRequest
+	{
+		string Version { get; set; }
 	}
 }
