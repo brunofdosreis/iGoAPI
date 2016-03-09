@@ -7,7 +7,7 @@ using iGO.Repositories.Extensions;
 
 namespace iGO.API.Models
 {
-	[Route("/event/users")]
+	[Route("/{Version}/event/users")]
 	public class GetEventUsersRequest : BaseRequest<Event>, IReturn<GetEventUsersResponse>
 	{
 		public int ID { get; set; }

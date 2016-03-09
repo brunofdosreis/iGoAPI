@@ -6,7 +6,7 @@ using iGO.Domain.Entities;
 
 namespace iGO.API.Models
 {
-	[Route("/events")]
+	[Route("/{Version}/events")]
 	public class GetEventsRequest : BaseRequest<Object>, IReturn<GetEventsResponse>
 	{
 		public override Object GetEntity()

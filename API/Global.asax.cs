@@ -17,11 +17,7 @@ namespace iGO.API
 		{
 			//Tell ServiceStack the name of your application and where to find your services
 			public AppHost() : base("iGO-API", 
-				typeof(EventService).Assembly,
-				typeof(HelloService).Assembly,
-				//typeof(MatchService).Assembly,
-				//typeof(MessageService).Assembly,
-				typeof(UserService).Assembly
+				typeof(BaseService).Assembly
 			) { }
 
 			public override RouteAttribute[] GetRouteAttributes(Type requestType)

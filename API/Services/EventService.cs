@@ -122,7 +122,7 @@ namespace iGO.API.Services
 			int age = (new DateTime(1, 1, 1) + (DateTime.Now - User.Birthday)).Year - 1;
 
 			Users = Users.Where(x => x.UserPreferences != null &&
-				User.UserPreferences.Gender == User.Gender &&
+				(User.UserPreferences.Gender == "" || User.UserPreferences.Gender == User.Gender) &&
 				(
 					age >= User.UserPreferences.AgeStart &&
 					age <= User.UserPreferences.AgeEnd

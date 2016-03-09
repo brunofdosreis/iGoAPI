@@ -31,5 +31,5 @@ namespace iGO.API.Services
 
 			return new HelloResponse(hello2);
 		}
-	} 
+	}
 }
