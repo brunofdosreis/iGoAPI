@@ -1,10 +1,14 @@
 ﻿using System;
+using System.Linq;
 using System.Net;
+using System.Collections.Generic;
 
 using ServiceStack;
 
 using Newtonsoft.Json;
 
+using iGO.Domain.Entities;
+using iGO.Repositories;
 using iGO.API.Services;
 using iGO.API.Models;
 using iGO.API.Authorization;
@@ -32,6 +36,10 @@ namespace iGO.API
 				//register any dependencies your services use, e.g:
 				//container.Register<ICacheClient>(new MemoryCacheClient());
 
+				this.PreRequestFilters.Add((httpReq, httpRes) => {
+					httpReq.UseBufferedStream = true;
+				});
+
 				this.PreRequestFilters.Add((req, res) => {
 					string apiKey = req.Headers["API-Key"];
 					if (apiKey == null || !Clients.VerifyKey(apiKey))
@@ -42,12 +50,38 @@ namespace iGO.API
 
 				this.GlobalRequestFilters.Add((req, res, obj) => {
 
+					string Version = "";
+
 					try
 					{
-						string Version = ((BaseRequest)obj).Version;
+						Version = ((BaseRequest)obj).Version;
 					}
-					catch (Exception e)
+					finally
 					{
+						if (Version != null)
+						{
+							List<Support> Support = new BaseRepository<Support>().List (x => x.Platform == "API").ToList();
+
+							Support oldest = Support.FirstOrDefault(x => x.Type == "oldest");
+
+							if (oldest != null)
+							{
+								if (String.Compare(oldest.Version, Version) > 0)
+								{
+									throw new HttpError(HttpStatusCode.Gone);
+								}
+							}
+
+							Support latest = Support.FirstOrDefault(x => x.Type == "latest");
+
+							if (latest != null)
+							{
+								if (String.Compare(latest.Version, Version) < 0)
+								{
+									throw new HttpError(HttpStatusCode.NotImplemented);
+								}
+							}
+						}
 					}
 				});
 
@@ -72,6 +106,10 @@ namespace iGO.API
 				/*SetConfig(new HostConfig {
 					DebugMode = true,
 				});*/
+
+				SetConfig(new HostConfig { 
+					EnableFeatures = Feature.All.Remove(Feature.Metadata)
+				});
 
 				//Handle Exceptions occurring in Services:
 				this.ServiceExceptionHandlers.Add((httpReq, request, exception) => 

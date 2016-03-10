@@ -11,7 +11,7 @@ namespace iGO.API.Services
 	{
 		public object Any(HelloRequest request)
 		{
-			NhibernateManager.CreateDatabase();
+			//NhibernateManager.CreateDatabase();
 
 			Hello hello = request.GetEntity();
 

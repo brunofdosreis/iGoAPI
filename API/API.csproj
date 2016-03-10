@@ -75,6 +75,7 @@
     <Content Include="packages.config" />
     <Content Include="web.config" />
     <Content Include="Global.asax" />
+    <Content Include="default.html" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Global.asax.cs">
@@ -106,6 +107,9 @@
     <Compile Include="Models\Event\GetEventsResponse.cs" />
     <Compile Include="Models\Event\GetEventUsersRequest.cs" />
     <Compile Include="Models\Event\GetEventUsersResponse.cs" />
+    <Compile Include="Services\SupportService.cs" />
+    <Compile Include="Models\Support\SupportRequest.cs" />
+    <Compile Include="Models\Support\SupportResponse.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Services\" />
@@ -116,6 +120,7 @@
     <Folder Include="Models\Base\" />
     <Folder Include="Models\User\" />
     <Folder Include="Models\Event\" />
+    <Folder Include="Models\Support\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Model\Domain.csproj">

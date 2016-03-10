@@ -54,5 +54,6 @@
     <Compile Include="Entities\Event.cs" />
     <Compile Include="Entities\Match.cs" />
     <Compile Include="Entities\Message.cs" />
+    <Compile Include="Entities\Support.cs" />
   </ItemGroup>
 </Project>
