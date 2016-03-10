@@ -6,7 +6,7 @@ using iGO.Domain.Entities;
 
 namespace iGO.API.Models
 {
-	[Route("/{Version}/hello")]
+	[Route("/{Version}/support")]
 	public class SupportRequest : BaseRequest<Support>, IReturn<SupportResponse>
 	{
 		public string platform { get; set; }
