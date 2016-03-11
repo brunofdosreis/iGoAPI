@@ -1,10 +1,9 @@
 ﻿<Properties StartupItem="API/API.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="API/Services/SupportService.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="API/Services/EventService.cs">
     <Files>
       <File FileName="API/Global.asax.cs" Line="134" Column="1" />
-      <File FileName="API/Services/HelloService.cs" Line="13" Column="1" />
-      <File FileName="API/Services/SupportService.cs" Line="28" Column="1" />
+      <File FileName="API/Services/EventService.cs" Line="23" Column="31" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

@@ -31,9 +31,11 @@ namespace iGO.API.Services
 				string unixTimestamp = ((Int32)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds).ToString();
 
 				dynamic me = client.Get("me", new { fields = new[] {
-						"events.since(" + unixTimestamp + "){id,name,description,start_time,attending,interested,rsvp_status,rsvp_status=attending,rsvp_status=interested}"
+						"events.since(" + unixTimestamp + "){id,name,description,start_time,rsvp_status}"
 					}
 				});
+
+				List<Event> _events = User.Event.Where(x => x.Date < DateTime.Now).ToList();
 
 				foreach(dynamic _event in me.events.data)
 				{
@@ -58,39 +60,15 @@ namespace iGO.API.Services
 					Event.Description = _event.description;
 					Event.Date = DateTime.Parse(_event.start_time);
 
-					List<User> Users = new List<User>(); //Event.User.ToList();
-
-					foreach(dynamic _user in _event.attending.data)
-					{
-						ulong userFacebookId = ulong.Parse(_user.id);
-
-						User EventUser = new BaseRepository<User>().List(x => x.FacebookId == userFacebookId).FirstOrDefault();
-
-						if (EventUser != null)
-						{
-							Users.Add(EventUser);
-						}
-					}
-
-					foreach(dynamic _user in _event.interested.data)
-					{
-						ulong userFacebookId = ulong.Parse(_user.id);
-
-						User EventUser = new BaseRepository<User>().List(x => x.FacebookId == userFacebookId).FirstOrDefault();
-
-						if (EventUser != null)
-						{
-							Users.Add(EventUser);
-						}
-					}
-
-					Event.User = Users;
-
-					Event.Save();
+					_events.Add(Event);
 				}
 
-			} catch (FacebookOAuthException) {
+				User.Event = _events;
 
+				User.Save();
+			}
+			catch (FacebookOAuthException)
+			{
 				throw new HttpError(HttpStatusCode.Unauthorized);
 			}
 
@@ -98,7 +76,7 @@ namespace iGO.API.Services
 
 			User = base.GetAuthenticatedUser();
 
-			return new GetEventsResponse(User.Event);
+			return new GetEventsResponse(User.Event.Where(x => x.Date > DateTime.Now));
 		}
 
 		public object Get(GetEventUsersRequest Request)
@@ -106,6 +84,52 @@ namespace iGO.API.Services
 			User User = base.GetAuthenticatedUser();
 
 			Event Event = Request.GetEntity();
+
+			ulong facebookId = Event.FacebookId;
+
+			try
+			{
+				FacebookClient client = new FacebookClient(User.FacebookToken);
+
+				dynamic _event = client.Get(facebookId.ToString(), new { fields = new[] {
+						"attending,interested"
+					}
+				});
+
+				List<User> _users = new List<User>(); //Event.User.ToList();
+
+				foreach(dynamic _user in _event.attending.data)
+				{
+					ulong userFacebookId = ulong.Parse(_user.id);
+
+					User EventUser = new BaseRepository<User>().List(x => x.FacebookId == userFacebookId).FirstOrDefault();
+
+					if (EventUser != null)
+					{
+						_users.Add(EventUser);
+					}
+				}
+
+				foreach(dynamic _user in _event.interested.data)
+				{
+					ulong userFacebookId = ulong.Parse(_user.id);
+
+					User EventUser = new BaseRepository<User>().List(x => x.FacebookId == userFacebookId).FirstOrDefault();
+
+					if (EventUser != null)
+					{
+						_users.Add(EventUser);
+					}
+				}
+
+				Event.User = _users;
+
+				Event.Save();
+			}
+			catch (FacebookOAuthException)
+			{
+				throw new HttpError(HttpStatusCode.Unauthorized);
+			}
 
 			IQueryable<Match> Matches = new BaseRepository<Match> ().List (x => x.Event.Id == Event.Id &&
 				(
