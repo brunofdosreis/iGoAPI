@@ -24,53 +24,69 @@ namespace iGO.API.Services
 		{
 			User User = base.GetAuthenticatedUser();
 
+			// TODO: manter eventos antigos
+			List<Event> _events = new List<Event>();//User.Event.Where(x => x.Date < DateTime.Now).ToList();
+
 			try {
 
 				FacebookClient client = new FacebookClient(User.FacebookToken);
 
 				string unixTimestamp = ((Int32)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds).ToString();
 
-				dynamic me = client.Get("me", new { fields = new[] {
-						"events.since(" + unixTimestamp + "){id,name,description,start_time,rsvp_status}"
-					}
-				});
+				string after = "";
 
-				List<Event> _events = User.Event.Where(x => x.Date < DateTime.Now).ToList();
-
-				foreach(dynamic _event in me.events.data)
+				do
 				{
-					if (_event.rsvp_status != "attending" && _event.rsvp_status != "interested")
+					dynamic me = client.Get("me", new { fields = new[] {
+							"events.since(" + unixTimestamp + ").limit(200)" + after + "{id,name,description,start_time,rsvp_status}"
+						}
+					});
+
+					if (me.events != null)
 					{
-						continue;
+						foreach(dynamic _event in me.events.data)
+						{
+							if (_event.rsvp_status != "attending" && _event.rsvp_status != "unsure")
+							{
+								continue;
+							}
+
+							ulong eventFacebookId = ulong.Parse(_event.id);
+
+							Event Event = new BaseRepository<Event>().List(x => x.FacebookId == eventFacebookId).FirstOrDefault();
+
+							if (Event == null)
+							{
+								Event = new Event(){
+									FacebookId = eventFacebookId,
+									User = new List<User>()
+								};
+							}
+
+							Event.Title = _event.name;
+							Event.Description = _event.description;
+							Event.Date = DateTime.Parse(_event.start_time);
+
+							_events.Add(Event);
+						}
+
+						after = ".after(" + me.events.paging.cursors.after + ")";
+					}
+					else
+					{
+						after = "";
 					}
 
-					ulong eventFacebookId = ulong.Parse(_event.id);
-
-					Event Event = new BaseRepository<Event>().List(x => x.FacebookId == eventFacebookId).FirstOrDefault();
-
-					if (Event == null)
-					{
-						Event = new Event(){
-							FacebookId = eventFacebookId,
-							User = new List<User>()
-						};
-					}
-
-					Event.Title = _event.name;
-					Event.Description = _event.description;
-					Event.Date = DateTime.Parse(_event.start_time);
-
-					_events.Add(Event);
-				}
-
-				User.Event = _events;
-
-				User.Save();
+				} while (after != "");
 			}
 			catch (FacebookOAuthException)
 			{
 				throw new HttpError(HttpStatusCode.Unauthorized);
 			}
+
+			User.Event = _events;
+
+			User.Save();
 
 			NhibernateManager.GetSession().Clear();
 
@@ -85,51 +101,78 @@ namespace iGO.API.Services
 
 			Event Event = Request.GetEntity();
 
-			ulong facebookId = Event.FacebookId;
+			/*ulong facebookId = Event.FacebookId;
+
+			List<User> _users = new List<User>(); //Event.User.ToList();
 
 			try
 			{
 				FacebookClient client = new FacebookClient(User.FacebookToken);
 
-				dynamic _event = client.Get(facebookId.ToString(), new { fields = new[] {
-						"attending,interested"
-					}
-				});
+				string after = "";
 
-				List<User> _users = new List<User>(); //Event.User.ToList();
-
-				foreach(dynamic _user in _event.attending.data)
+				do
 				{
-					ulong userFacebookId = ulong.Parse(_user.id);
+					dynamic _event = client.Get(facebookId.ToString(), new { fields = new[] { "attending.limit(1000)" + after + "{id}" } } );
 
-					User EventUser = new BaseRepository<User>().List(x => x.FacebookId == userFacebookId).FirstOrDefault();
-
-					if (EventUser != null)
+					if (_event.attending != null)
 					{
-						_users.Add(EventUser);
-					}
-				}
+						foreach(dynamic _user in _event.attending.data)
+						{
+							ulong userFacebookId = ulong.Parse(_user.id);
 
-				foreach(dynamic _user in _event.interested.data)
+							User EventUser = new BaseRepository<User>().List(x => x.FacebookId == userFacebookId).FirstOrDefault();
+
+							if (EventUser != null)
+							{
+								_users.Add(EventUser);
+							}
+						}
+
+						after = ".after(" + _event.attending.paging.cursors.after + ")";
+					}
+					else
+					{
+						after = "";
+					}
+
+				} while (after != "");
+
+				do
 				{
-					ulong userFacebookId = ulong.Parse(_user.id);
+					dynamic _event = client.Get(facebookId.ToString(), new { fields = new[] { "interested.limit(1000)" + after + "{id}" } } );
 
-					User EventUser = new BaseRepository<User>().List(x => x.FacebookId == userFacebookId).FirstOrDefault();
-
-					if (EventUser != null)
+					if (_event.interested != null)
 					{
-						_users.Add(EventUser);
+						foreach(dynamic _user in _event.interested.data)
+						{
+							ulong userFacebookId = ulong.Parse(_user.id);
+
+							User EventUser = new BaseRepository<User>().List(x => x.FacebookId == userFacebookId).FirstOrDefault();
+
+							if (EventUser != null)
+							{
+								_users.Add(EventUser);
+							}
+						}
+
+						after = ".after(" + _event.interested.paging.cursors.after + ")";
 					}
-				}
+					else
+					{
+						after = "";
+					}
 
-				Event.User = _users;
-
-				Event.Save();
+				} while (after != "");
 			}
 			catch (FacebookOAuthException)
 			{
 				throw new HttpError(HttpStatusCode.Unauthorized);
 			}
+
+			Event.User = _users;
+
+			Event.Save();*/
 
 			IQueryable<Match> Matches = new BaseRepository<Match> ().List (x => x.Event.Id == Event.Id &&
 				(

@@ -3,13 +3,14 @@
   <MonoDevelop.Ide.Workbench ActiveDocument="API/Services/EventService.cs">
     <Files>
       <File FileName="API/Global.asax.cs" Line="134" Column="1" />
-      <File FileName="API/Services/EventService.cs" Line="23" Column="31" />
+      <File FileName="API/Services/EventService.cs" Line="203" Column="1" />
+      <File FileName="API/Models/Hello/HelloRequest.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
-      <Breakpoint file="/Users/brunofdosreis/Projects/iGO/GIT/iGO/API/Global.asax.cs" line="122" column="1" />
       <Breakpoint file="/Users/brunofdosreis/Projects/iGO/GIT/iGO/API/Global.asax.cs" line="134" column="1" />
+      <Breakpoint file="/Users/brunofdosreis/Projects/iGO/GIT/iGO/API/Global.asax.cs" line="127" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
