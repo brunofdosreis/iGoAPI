@@ -14,7 +14,7 @@ namespace iGO.Repositories.Mappings
 			Map(x => x.Created);
 			Map(x => x.AgeStart);
 			Map(x => x.AgeEnd);
-			Map(x => x.Gender);
+			HasMany(x => x.Gender).Element("Gender").Cascade.AllDeleteOrphan();
 
 			References(x => x.User).Cascade.All();
 		}

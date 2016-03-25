@@ -15,7 +15,8 @@ namespace iGO.Repositories.Mappings
 			Map(x => x.FacebookId);
 			Map(x => x.Title);
 			Map(x => x.Description).CustomSqlType("nvarchar (4000)");
-			Map(x => x.Date);
+			Map(x => x.StartDate);
+			Map(x => x.EndDate);
 
 			HasManyToMany(x => x.User).Table("UserEvent").Cascade.All();
 		}

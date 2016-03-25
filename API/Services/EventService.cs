@@ -35,49 +35,57 @@ namespace iGO.API.Services
 
 				string after = "";
 
-				do
+				if (Request.offset == 0)
 				{
-					dynamic me = client.Get("me", new { fields = new[] {
-							"events.since(" + unixTimestamp + ").limit(200)" + after + "{id,name,description,start_time,rsvp_status}"
-						}
-					});
-
-					if (me.events != null)
+					do
 					{
-						foreach(dynamic _event in me.events.data)
+						dynamic me = client.Get("me", new { fields = new[] {
+								"events.since(" + unixTimestamp + ").limit(200)" + after + "{id,name,description,start_time,end_time,rsvp_status}"
+							}
+						});
+
+						if (me.events != null)
 						{
-							if (_event.rsvp_status != "attending" && _event.rsvp_status != "unsure")
+							foreach(dynamic _event in me.events.data)
 							{
-								continue;
+								if (_event.rsvp_status != "attending" && _event.rsvp_status != "unsure")
+								{
+									continue;
+								}
+
+								ulong eventFacebookId = ulong.Parse(_event.id);
+
+								Event Event = new BaseRepository<Event>().List(x => x.FacebookId == eventFacebookId).FirstOrDefault();
+
+								if (Event == null)
+								{
+									Event = new Event(){
+										FacebookId = eventFacebookId,
+										User = new List<User>()
+									};
+								}
+
+								Event.Title = _event.name;
+								Event.Description = _event.description;
+								Event.StartDate = DateTime.Parse(_event.start_time);
+
+								if (_event.end_time == null)
+								{
+									Event.EndDate = DateTime.Parse(_event.end_time);
+								}
+
+								_events.Add(Event);
 							}
 
-							ulong eventFacebookId = ulong.Parse(_event.id);
-
-							Event Event = new BaseRepository<Event>().List(x => x.FacebookId == eventFacebookId).FirstOrDefault();
-
-							if (Event == null)
-							{
-								Event = new Event(){
-									FacebookId = eventFacebookId,
-									User = new List<User>()
-								};
-							}
-
-							Event.Title = _event.name;
-							Event.Description = _event.description;
-							Event.Date = DateTime.Parse(_event.start_time);
-
-							_events.Add(Event);
+							after = ".after(" + me.events.paging.cursors.after + ")";
+						}
+						else
+						{
+							after = "";
 						}
 
-						after = ".after(" + me.events.paging.cursors.after + ")";
-					}
-					else
-					{
-						after = "";
-					}
-
-				} while (after != "");
+					} while (after != "");
+				}
 			}
 			catch (FacebookOAuthException)
 			{
@@ -92,7 +100,17 @@ namespace iGO.API.Services
 
 			User = base.GetAuthenticatedUser();
 
-			return new GetEventsResponse(User.Event.Where(x => x.Date > DateTime.Now));
+			List<Event> Events = User.Event.Where(x => (x.EndDate == null && x.StartDate.AddHours(6) > DateTime.Now) ||
+				x.EndDate > DateTime.Now).ToList();
+
+			Events = Events.Skip(Request.offset).ToList();
+
+			if (Request.limit > 0)
+			{
+				Events = Events.Take(Request.limit).ToList();
+			}
+
+			return new GetEventsResponse(Events);
 		}
 
 		public object Get(GetEventUsersRequest Request)
@@ -186,17 +204,23 @@ namespace iGO.API.Services
 				!Matches.Any(y => y.SecondUser.Id == x.Id)
 			).ToList();
 
-			int age = (new DateTime(1, 1, 1) + (DateTime.Now - User.Birthday)).Year - 1;
+			int userAge = (new DateTime(1, 1, 1) + (DateTime.Now - User.Birthday)).Year - 1;
 
-			Users = Users.Where(x => x.UserPreferences != null &&
-				(User.UserPreferences.Gender == "" || User.UserPreferences.Gender == User.Gender) &&
+			Users = Users.Where(x => x.UserPreferences != null && User.UserPreferences != null &&
+				User.UserPreferences.Gender.Contains(x.Gender) && x.UserPreferences.Gender.Contains(User.Gender)
+				&&
 				(
-					age >= User.UserPreferences.AgeStart &&
-					age <= User.UserPreferences.AgeEnd
+					userAge >= x.UserPreferences.AgeStart &&
+					userAge <= x.UserPreferences.AgeEnd
+				)
+				&&
+				(
+					(new DateTime(1, 1, 1) + (DateTime.Now - x.Birthday)).Year - 1 >= User.UserPreferences.AgeStart &&
+					(new DateTime(1, 1, 1) + (DateTime.Now - x.Birthday)).Year - 1 <= User.UserPreferences.AgeEnd
 				)
 			).ToList();
 
-			return new GetEventUsersResponse(Users);
+			return new GetEventUsersResponse(Users.Take(Request.limit));
 		}
 	}
 }

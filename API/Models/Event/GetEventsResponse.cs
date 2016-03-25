@@ -30,7 +30,7 @@ namespace iGO.API.Models
 							ID = _event.Id,
 							title = _event.Title,
 							desciption = _event.Description,
-							date = _event.Date
+							date = _event.StartDate.ToString("yyyy-MM-dd'T'HH:mm:ss'GTM'zzz")
 						}
 					);
 				}
@@ -43,9 +43,8 @@ namespace iGO.API.Models
 				public int ID { get; set; }
 				public string title { get; set; }
 				public string desciption { get; set; }
-				public DateTime date { get; set; }
+				public string date { get; set; }
 			}
 		}
 	}
 }
-

@@ -11,6 +11,7 @@ namespace iGO.API.Models
 	public class GetEventUsersRequest : BaseRequest<Event>, IReturn<GetEventUsersResponse>
 	{
 		public int ID { get; set; }
+		public int limit { get; set; }
 
 		public override Event GetEntity()
 		{
