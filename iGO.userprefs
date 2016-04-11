@@ -1,12 +1,12 @@
 ﻿<Properties StartupItem="API/API.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Repositories/Mappings/UserPreferencesMap.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="API/Models/Match/GetMatchesResponse.cs">
     <Files>
       <File FileName="API/Global.asax.cs" Line="127" Column="1" />
-      <File FileName="API/Services/EventService.cs" Line="23" Column="46" />
-      <File FileName="API/Services/UserService.cs" Line="117" Column="35" />
-      <File FileName="Repositories/Mappings/UserPreferencesMap.cs" Line="17" Column="36" />
-      <File FileName="Model/Entities/UserPreferences.cs" Line="14" Column="1" />
+      <File FileName="API/Services/EventService.cs" Line="21" Column="33" />
+      <File FileName="API/Services/MessageService.cs" Line="15" Column="11" />
+      <File FileName="API/Models/Match/GetMatchesResponse.cs" Line="15" Column="4" />
+      <File FileName="API/Models/Message/GetMessagesResponse.cs" Line="17" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

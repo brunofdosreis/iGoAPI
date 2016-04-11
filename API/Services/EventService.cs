@@ -69,7 +69,7 @@ namespace iGO.API.Services
 								Event.Description = _event.description;
 								Event.StartDate = DateTime.Parse(_event.start_time);
 
-								if (_event.end_time == null)
+								if (_event.end_time != null)
 								{
 									Event.EndDate = DateTime.Parse(_event.end_time);
 								}

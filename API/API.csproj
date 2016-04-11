@@ -110,6 +110,13 @@
     <Compile Include="Services\SupportService.cs" />
     <Compile Include="Models\Support\SupportRequest.cs" />
     <Compile Include="Models\Support\SupportResponse.cs" />
+    <Compile Include="Models\Match\PostMatchLikeRequest.cs" />
+    <Compile Include="Models\Match\PostMatchLikeResponse.cs" />
+    <Compile Include="Models\Match\GetMatchesRequest.cs" />
+    <Compile Include="Models\Match\GetMatchesResponse.cs" />
+    <Compile Include="Models\Message\GetMessagesRequest.cs" />
+    <Compile Include="Models\Message\GetMessagesResponse.cs" />
+    <Compile Include="Models\Message\PostMessageRequest.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Services\" />
@@ -121,6 +128,8 @@
     <Folder Include="Models\User\" />
     <Folder Include="Models\Event\" />
     <Folder Include="Models\Support\" />
+    <Folder Include="Models\Match\" />
+    <Folder Include="Models\Message\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Model\Domain.csproj">

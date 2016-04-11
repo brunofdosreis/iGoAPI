@@ -16,6 +16,8 @@ namespace iGO.Repositories.Configuration
 
 		public static void CreateDatabase()
 		{
+			GetSession().CreateSQLQuery("DROP DATABASE IF EXISTS `iGO`; CREATE DATABASE `iGO`;").UniqueResult();
+
 			if (Session != null)
 			{
 				Session.Close();
@@ -25,7 +27,7 @@ namespace iGO.Repositories.Configuration
 
 			Fluently.Configure()
 				.Database(
-					MySQLConfiguration.Standard.ConnectionString(
+					MySQLConfiguration.Standard.ShowSql().ConnectionString(
 						ConfigurationManager.ConnectionStrings["DataConnectionSting"].ConnectionString
 					)
 				)
