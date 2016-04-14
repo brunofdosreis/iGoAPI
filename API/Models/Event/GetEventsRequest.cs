@@ -6,7 +6,7 @@ using iGO.Domain.Entities;
 
 namespace iGO.API.Models
 {
-	[Route("/{Version}/events")]
+	[Route("/{Version}/events", "GET")]
 	public class GetEventsRequest : BaseRequest<Object>, IReturn<GetEventsResponse>
 	{
 		public int limit { get; set; }

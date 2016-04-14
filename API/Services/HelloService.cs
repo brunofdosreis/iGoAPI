@@ -1,4 +1,5 @@
-﻿using ServiceStack.ServiceInterface;
+﻿using ServiceStack;
+using ServiceStack.ServiceInterface;
 
 using iGO.API.Models;
 using iGO.Domain.Entities;
@@ -30,6 +31,53 @@ namespace iGO.API.Services
 			Hello hello2 = new Hello().Get(hello.Id);
 
 			return new HelloResponse(hello2);
+		}
+
+		public object Any(HelloCreateRequest Request)
+		{
+			foreach (HelloCreateRequest.Object user in Request.user)
+			{
+				/*PostUserRequest PostUserRequest;
+
+				PostUserRequest = new PostUserRequest()
+				{
+					facebookToken = user.facebookToken
+				};
+
+				HostContext.ServiceController.Execute(PostUserRequest, base.Request);
+
+				HostContext.ServiceController.Execute(new GetEventsRequest(), base.Request);
+
+				HostContext.ServiceController.Execute(new PutUserPreferencesRequest() {
+					ageEnd = user.ageEnd,
+					ageStart = user.ageStart,
+					gender = user.gender
+				}, base.Request);*/
+
+				JsonServiceClient client = new JsonServiceClient ();//base.Request.Headers["Host"]);
+
+				client.AddHeader ("API-Key", "Android");
+
+				client.Post<BaseResponse>("http://127.0.0.1:8080/api/1.5/user", new PostUserRequest()
+					{
+						facebookToken = user.facebookToken
+					}
+				);
+
+				client.AddHeader ("Auth-Key", user.facebookToken);
+
+				client.Get<GetEventsResponse>("http://127.0.0.1:8080/api/1.5/events");
+
+				client.Put<BaseResponse>("http://127.0.0.1:8080/api/1.5/user/preferences", new PutUserPreferencesRequest()
+					{
+						ageEnd = user.ageEnd,
+						ageStart = user.ageStart,
+						gender = user.gender
+					}
+				);
+			}
+
+			return new BaseResponse();
 		}
 	}
 }

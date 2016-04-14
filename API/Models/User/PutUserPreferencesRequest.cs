@@ -6,7 +6,7 @@ using iGO.Domain.Entities;
 
 namespace iGO.API.Models
 {
-	[Route("/user/preferences")]
+	[Route("/{Version}/user/preferences", "PUT")]
 	public class PutUserPreferencesRequest : BaseRequest<UserPreferences>, IReturn<BaseResponse>
 	{
 		public int ageStart { get; set; }

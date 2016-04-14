@@ -156,6 +156,8 @@ namespace iGO.API
 		//Initialize your application singleton
 		protected void Application_Start(object sender, EventArgs e)
 		{
+			ServiceStack.Licensing.RegisterLicense(@"3703-e1JlZjozNzAzLE5hbWU6QkYgUkVJUyBJTkZPUk1BVElDQSBMVERBLFR5cGU6SW5kaWUsSGFzaDpmd3BMazg2ampYeXQrc1Y5REdoNWdiZXZHaE14RllPdTFOUzdNbEMwbGlIbmNXTVdXRTdVNDJlQzBmZ1RiQzVsK2dnK2hLTk1YNlR5aUJvSmlvNU1weWpNNFUxSXZRcUVVQklIUHNDL0NHbXFPMVRkTTdUZFNnNDVYUGZ2ZzBkRWJ0WFNPaHpid2JtQTZhWVZFVFcwNjhvdmwxNGRSakVZRVgyQ05qREZVQk09LEV4cGlyeToyMDE3LTA0LTE0fQ==");
+
 			new AppHost().Init();
 		}
 	}

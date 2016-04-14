@@ -11,7 +11,10 @@ namespace iGO.API.Models
 
 		public GetUserPreferencesResponse(UserPreferences UserPreferences) : base()
 		{
-			this.data = new Object(UserPreferences);
+			if (UserPreferences != null)
+			{
+				this.data = new Object (UserPreferences);
+			}
 		}
 
 		public class Object

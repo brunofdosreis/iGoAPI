@@ -20,7 +20,7 @@ namespace iGO.API.Services
 	[CustomAuthenticateToken]
 	public class EventService : BaseService
 	{
-		public object Get(GetEventsRequest Request)
+		public object Any(GetEventsRequest Request)
 		{
 			User User = base.GetAuthenticatedUser();
 
@@ -72,6 +72,10 @@ namespace iGO.API.Services
 								if (_event.end_time != null)
 								{
 									Event.EndDate = DateTime.Parse(_event.end_time);
+
+								} else {
+
+									Event.EndDate = null;
 								}
 
 								_events.Add(Event);
@@ -115,7 +119,7 @@ namespace iGO.API.Services
 
 		public object Get(GetEventUsersRequest Request)
 		{
-			User User = base.GetAuthenticatedUser();
+			User user = base.GetAuthenticatedUser();
 
 			Event Event = Request.GetEntity();
 
@@ -192,35 +196,45 @@ namespace iGO.API.Services
 
 			Event.Save();*/
 
-			IQueryable<Match> Matches = new BaseRepository<Match> ().List (x => x.Event.Id == Event.Id &&
+			IQueryable<Match> Matches = new BaseRepository<Match>().List(x => x.Event.Id == Event.Id &&
 				(
-					(x.FirstUser.Id == User.Id && x.IsFirstUserLike != null) || 
-					(x.SecondUser.Id == User.Id && x.IsSecondUserLike != null)
+					(x.FirstUser.Id == user.Id && x.IsFirstUserLike != null) || 
+					(x.SecondUser.Id == user.Id && x.IsSecondUserLike != null)
 				)
 			);
 
-			List<User> Users = Event.User.Where(x => x.Id != User.Id && 
-				!Matches.Any(y => y.FirstUser.Id == x.Id) &&
-				!Matches.Any(y => y.SecondUser.Id == x.Id)
-			).ToList();
+			IEnumerable<User> Users = Event.User.Where(x => x.Id != user.Id
+				&& !Matches.Any(y => y.FirstUser.Id == x.Id || y.SecondUser.Id == x.Id)
+			);
 
-			int userAge = (new DateTime(1, 1, 1) + (DateTime.Now - User.Birthday)).Year - 1;
+			int userAge = (new DateTime(1, 1, 1) + (DateTime.Now - user.Birthday)).Year - 1;
 
-			Users = Users.Where(x => x.UserPreferences != null && User.UserPreferences != null &&
-				User.UserPreferences.Gender.Contains(x.Gender) && x.UserPreferences.Gender.Contains(User.Gender)
+			Users = Users.Where (x => x.UserPreferences != null && user.UserPreferences != null
+				&& user.UserPreferences.Gender.Contains (x.Gender) && x.UserPreferences.Gender.Contains (user.Gender)
+			);
+
+			Users = Users.Where (x => x.UserPreferences != null && user.UserPreferences != null
 				&&
 				(
-					userAge >= x.UserPreferences.AgeStart &&
-					userAge <= x.UserPreferences.AgeEnd
+				    userAge >= x.UserPreferences.AgeStart &&
+				    userAge <= x.UserPreferences.AgeEnd
 				)
+			);
+
+			Users = Users.Where (x => x.UserPreferences != null && user.UserPreferences != null
 				&&
 				(
-					(new DateTime(1, 1, 1) + (DateTime.Now - x.Birthday)).Year - 1 >= User.UserPreferences.AgeStart &&
-					(new DateTime(1, 1, 1) + (DateTime.Now - x.Birthday)).Year - 1 <= User.UserPreferences.AgeEnd
+					(new DateTime(1, 1, 1) + (DateTime.Now - x.Birthday)).Year - 1 >= user.UserPreferences.AgeStart &&
+					(new DateTime(1, 1, 1) + (DateTime.Now - x.Birthday)).Year - 1 <= user.UserPreferences.AgeEnd
 				)
-			).ToList();
+			);
 
-			return new GetEventUsersResponse(Users.Take(Request.limit));
+			if (Request.limit > 0)
+			{
+				Users = Users.Take(Request.limit);
+			}
+
+			return new GetEventUsersResponse(Users);
 		}
 	}
 }
