@@ -74,6 +74,7 @@
     <Compile Include="Mappings\UserPicturesMap.cs" />
     <Compile Include="Mappings\UserPreferencesMap.cs" />
     <Compile Include="Mappings\SupportMap.cs" />
+    <Compile Include="Mappings\DeviceTokenMap.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

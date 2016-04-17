@@ -23,6 +23,8 @@ namespace iGO.Repositories.Mappings
 
 			HasMany(x => x.UserPictures).Cascade.All();
 
+			HasMany(x => x.DeviceToken).Cascade.All();
+
 			HasManyToMany(x => x.Event).Table("UserEvent").Cascade.All();
 
 			HasMany(x => x.Match).Cascade.All();

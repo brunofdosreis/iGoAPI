@@ -13,6 +13,7 @@ namespace iGO.Domain.Entities
 		public virtual string Gender { get; set; }
 		public virtual UserPreferences UserPreferences { get; set; }
 		public virtual IEnumerable<UserPictures> UserPictures { get; set; }
+		public virtual IEnumerable<DeviceToken> DeviceToken { get; set; }
 		public virtual IEnumerable<Event> Event { get; set; }
 		public virtual IEnumerable<Match> Match { get; set; }
 	}

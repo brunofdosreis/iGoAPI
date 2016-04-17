@@ -18,16 +18,6 @@ namespace iGO.API.Services
 
 			hello.Save();
 
-			/*var Repository = new BaseRepository<Hello>();
-
-			Repository.BeginTransaction();
-
-			Repository.Save(hello);
-
-			Repository.CommitTransaction();
-
-			Hello hello2 = Repository.Get(hello.Id);*/
-
 			Hello hello2 = new Hello().Get(hello.Id);
 
 			return new HelloResponse(hello2);
@@ -37,23 +27,6 @@ namespace iGO.API.Services
 		{
 			foreach (HelloCreateRequest.Object user in Request.user)
 			{
-				/*PostUserRequest PostUserRequest;
-
-				PostUserRequest = new PostUserRequest()
-				{
-					facebookToken = user.facebookToken
-				};
-
-				HostContext.ServiceController.Execute(PostUserRequest, base.Request);
-
-				HostContext.ServiceController.Execute(new GetEventsRequest(), base.Request);
-
-				HostContext.ServiceController.Execute(new PutUserPreferencesRequest() {
-					ageEnd = user.ageEnd,
-					ageStart = user.ageStart,
-					gender = user.gender
-				}, base.Request);*/
-
 				JsonServiceClient client = new JsonServiceClient ();//base.Request.Headers["Host"]);
 
 				client.AddHeader ("API-Key", "Android");

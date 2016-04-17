@@ -23,13 +23,13 @@ namespace iGO.API.Services
 
 			// TODO: Salvar a foto do perfil localmente
 
-			try {
-
+			try
+			{
 				string accessToken = User.FacebookToken;
 
 				FacebookClient client = new FacebookClient(accessToken);
 
-				dynamic me = client.Get("me", new { fields = new[] { "id", "email", "name", "birthday", "picture", "gender" }});
+				dynamic me = client.Get("me", new { fields = new[] { "id", "email", "name", "birthday", "picture.width(480).height(480)", "gender" }});
 
 				ulong facebookId = ulong.Parse(me.id);
 
@@ -61,33 +61,19 @@ namespace iGO.API.Services
 
 					User.UserPictures = UserPictures;
 
-				} else {
-
+				}
+				else
+				{
 					User.FacebookToken = accessToken;
 				}
 
-			} catch (FacebookOAuthException) {
-
+			}
+			catch (FacebookOAuthException)
+			{
 				throw new HttpError(HttpStatusCode.Unauthorized);
 			}
 
 			User.Save();
-
-			return new BaseResponse();
-		}
-
-		[CustomAuthenticateToken]
-		public object Put(PutUserRequest Request)
-		{
-			UserPictures DefaultPictureNew = Request.GetEntity();
-
-			UserPictures DefaultPictureOld = new BaseRepository<UserPictures>().List(x => x.IsDefault).FirstOrDefault();
-
-			DefaultPictureOld.IsDefault = false;
-			DefaultPictureOld.Save();
-
-			DefaultPictureNew.IsDefault = true;
-			DefaultPictureNew.Save();
 
 			return new BaseResponse();
 		}
@@ -130,6 +116,83 @@ namespace iGO.API.Services
 			User.UserPreferences.Gender = UserPreferences.Gender;
 
 			User.UserPreferences.Save();
+
+			return new BaseResponse();
+		}
+
+		[CustomAuthenticateToken]
+		public object Get(GetUserPicturesRequest Request)
+		{
+			User User = GetAuthenticatedUser();
+
+			List<string> pictures = new List<string>();
+
+			try
+			{
+				string accessToken = User.FacebookToken;
+
+				FacebookClient client = new FacebookClient(accessToken);
+
+				dynamic me = client.Get("me", new { fields = new[] { "albums.limit(1000){type,id}" }});
+
+				string facebookId = "";
+
+				if (me.albums != null && me.albums.data != null)
+				{
+					foreach(dynamic album in me.albums.data)
+					{
+						if (album.type == "profile")
+						{
+							facebookId = album.id;
+
+							break;
+						}
+					}
+				}
+
+				if (facebookId != "")
+				{
+					dynamic album = client.Get(facebookId, new { fields = new[] { "photos.limit(1000){source}" } } );
+
+					if (album.photos != null && album.photos.data != null)
+					{
+						foreach(dynamic photo in album.photos.data)
+						{
+							pictures.Add(photo.source);
+						}
+					}
+				}
+			}
+			catch (FacebookOAuthException)
+			{
+				throw new HttpError(HttpStatusCode.Unauthorized);
+			}
+
+			return new GetUserPicturesResponse(pictures.ToArray());
+		}
+
+		[CustomAuthenticateToken]
+		public object Put(PutUserPicturesRequest Request)
+		{
+			User User = GetAuthenticatedUser();
+
+			List<UserPictures> UserPictures = new List<UserPictures>();
+
+			foreach (PutUserPicturesRequest.Object picture in Request.pictures)
+			{
+				UserPictures.Add (new UserPictures()
+					{
+						Id = picture.ID,
+						Picture = picture.picture,
+						IsDefault = picture.isDefault,
+						User = User
+					}
+				);
+			}
+
+			User.UserPictures = UserPictures;
+
+			User.Save();
 
 			return new BaseResponse();
 		}

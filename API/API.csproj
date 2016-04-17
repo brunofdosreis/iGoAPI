@@ -97,7 +97,6 @@
     <Compile Include="Services\MatchService.cs" />
     <Compile Include="Services\MessageService.cs" />
     <Compile Include="Models\User\PostUserRequest.cs" />
-    <Compile Include="Models\User\PutUserRequest.cs" />
     <Compile Include="Models\User\GetUserRequest.cs" />
     <Compile Include="Models\User\GetUserResponse.cs" />
     <Compile Include="Models\User\GetUserPreferencesRequest.cs" />
@@ -118,6 +117,12 @@
     <Compile Include="Models\Message\GetMessagesResponse.cs" />
     <Compile Include="Models\Message\PostMessageRequest.cs" />
     <Compile Include="Models\Hello\HelloCreateRequest.cs" />
+    <Compile Include="Services\PushService.cs" />
+    <Compile Include="Models\Push\PutPushRequest.cs" />
+    <Compile Include="Models\Push\DeletePushRequest.cs" />
+    <Compile Include="Models\User\GetUserPicturesRequest.cs" />
+    <Compile Include="Models\User\GetUserPicturesResponse.cs" />
+    <Compile Include="Models\User\PutUserPicturesRequest.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Services\" />
@@ -131,6 +136,7 @@
     <Folder Include="Models\Support\" />
     <Folder Include="Models\Match\" />
     <Folder Include="Models\Message\" />
+    <Folder Include="Models\Push\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Model\Domain.csproj">
