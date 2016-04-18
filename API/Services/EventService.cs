@@ -20,14 +20,19 @@ namespace iGO.API.Services
 	[CustomAuthenticateToken]
 	public class EventService : BaseService
 	{
-		public object Any(GetEventsRequest Request)
+		public object Get(GetEventsRequest Request)
 		{
 			User user = base.GetAuthenticatedUser();
 
-			List<Event> _events = user.Event.Where(x => 
-				(x.EndDate == null && x.StartDate < DateTime.Now.AddHours(6))
-				|| x.EndDate < DateTime.Now
-			).ToList();
+			List<Event> _events = new List<Event>();
+
+			if (user.Event != null) {
+
+				_events = user.Event.Where (x => 
+					(x.EndDate == null && x.StartDate < DateTime.Now.AddHours (6))
+					|| x.EndDate < DateTime.Now
+				).ToList ();
+			}
 
 			try {
 
@@ -163,7 +168,7 @@ namespace iGO.API.Services
 				Users = Users.Take(Request.limit);
 			}
 
-			return new GetEventUsersResponse(Users);
+			return new GetEventUsersResponse(user, Users);
 		}
 	}
 }

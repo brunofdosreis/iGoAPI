@@ -13,6 +13,7 @@ namespace iGO.API.Models
 		public PostMatchLikeResponse(Match Match)
 		{
 			data = new Object () {
+				matchID = Match.Id,
 				isMatch = (Match.IsFirstUserLike ?? false) && 
 					(Match.IsSecondUserLike ?? false)
 			};
@@ -20,6 +21,7 @@ namespace iGO.API.Models
 
 		public class Object
 		{
+			public int matchID { get; set; }
 			public bool isMatch { get; set; }
 		}
 	}
