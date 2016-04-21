@@ -1,12 +1,12 @@
 ﻿<Properties StartupItem="API/API.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="API/Services/EventService.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="API/Models/Message/GetMessagesResponse.cs">
     <Files>
-      <File FileName="API/Global.asax.cs" Line="127" Column="1" />
-      <File FileName="API/Services/HelloService.cs" Line="13" Column="3" />
-      <File FileName="API/Services/PushService.cs" Line="25" Column="1" />
-      <File FileName="API/Services/UserService.cs" Line="201" Column="1" />
-      <File FileName="API/Services/EventService.cs" Line="170" Column="1" />
+      <File FileName="API/Services/EventService.cs" Line="1" Column="1" />
+      <File FileName="API/Models/Event/GetEventUsersResponse.cs" Line="44" Column="6" />
+      <File FileName="API/Models/Match/GetMatchesResponse.cs" Line="1" Column="1" />
+      <File FileName="API/Services/MessageService.cs" Line="19" Column="29" />
+      <File FileName="API/Models/Message/GetMessagesResponse.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

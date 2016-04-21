@@ -21,15 +21,16 @@ namespace iGO.API.Services
 
 			User User = new User().Get(Request.userID);
 
-			Event Event = new Event().Get(Request.eventID);
+			Event event_ = new Event().Get(Request.eventID);
 
-			Match Match = new BaseRepository<Match>().List (x => 
+			Match match = new BaseRepository<Match>().List (x => 
 				x.FirstUser == User && x.SecondUser == AuthenticatedUser && 
-				x.Event == Event).FirstOrDefault();
+				x.Event == event_).FirstOrDefault();
 
-			if (Match == null)
+			if (match == null)
 			{
-				Match = new Match() {
+				match = new Match() {
+					Event = event_,
 					FirstUser = AuthenticatedUser,
 					DateFirstUser = DateTime.Now,
 					IsFirstUserLike = Request.isLike,
@@ -38,23 +39,28 @@ namespace iGO.API.Services
 			}
 			else
 			{
-				Match.DateSecondUser = DateTime.Now;
-				Match.IsSecondUserLike = Request.isLike;
+				match.DateSecondUser = DateTime.Now;
+				match.IsSecondUserLike = Request.isLike;
 			}
 
-			Match.Save();
+			match.Save();
 
-			return new PostMatchLikeResponse(Match);
+			return new PostMatchLikeResponse(match);
 		}
 
 		public object Get(GetMatchesRequest Request)
 		{
-			User User = GetAuthenticatedUser();
+			User user = GetAuthenticatedUser();
 
-			IQueryable<Match> Match = new BaseRepository<Match>().List (x => 
-				x.FirstUser == User || x.SecondUser == User);
+			IQueryable<Match> Matches = new BaseRepository<Match>().List(x => 
+				x.SecondUser != null
+				&&
+				(x.FirstUser == user || x.SecondUser == user)
+				&&
+				(x.IsFirstUserLike && x.IsSecondUserLike != null && x.IsSecondUserLike == true)
+			);
 
-			GetMatchesResponse Response = new GetMatchesResponse(Match.ToList ());
+			GetMatchesResponse Response = new GetMatchesResponse(user, Matches.ToList());
 
 			Response.data = Response.data.Skip(Request.offset).ToArray();
 

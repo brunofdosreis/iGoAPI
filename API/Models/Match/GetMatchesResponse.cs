@@ -12,11 +12,13 @@ namespace iGO.API.Models
 	{
 		public new Object[] data { get; set; }
 
-		public GetMatchesResponse(List<Match> Match)
+		public GetMatchesResponse(User user, List<Match> matches)
 		{
+			data = new Object[] {};
+
 			List<Object> Matches = new List<Object>();
 
-			foreach (Match match in Match)
+			foreach (Match match in matches)
 			{
 				bool found = false;
 
@@ -37,17 +39,34 @@ namespace iGO.API.Models
 
 				if (!found) {
 
+					Object.User u = new Object.User();
+
+					if (match.FirstUser.Id == user.Id)
+					{
+						u = new Object.User() {
+							id = match.SecondUser.Id,
+							name = match.SecondUser.Name,
+							birthday = match.SecondUser.Birthday.ToString ("yyyy-MM-dd'T'HH:mm:ss'GTM'zzz"),
+							gender = match.SecondUser.Gender,
+							picture = match.SecondUser.UserPictures.First (x => x.IsDefault).Picture
+						};
+					}
+					else
+					{
+						u = new Object.User() {
+							id = match.FirstUser.Id,
+							name = match.FirstUser.Name,
+							birthday = match.FirstUser.Birthday.ToString ("yyyy-MM-dd'T'HH:mm:ss'GTM'zzz"),
+							gender = match.FirstUser.Gender,
+							picture = match.FirstUser.UserPictures.First (x => x.IsDefault).Picture
+						};
+					}
+
 					Matches.Add (new Object
 						{
 							ID = match.Id,
 							events = new string[]{ match.Event.Title },
-							user = new Object.User() {
-								id = match.FirstUser.Id,
-								name = match.FirstUser.Name,
-								birthday = match.FirstUser.Birthday.ToString("yyyy-MM-dd'T'HH:mm:ss'GTM'zzz"),
-								gender = match.FirstUser.Gender,
-								picture = match.FirstUser.UserPictures.First(x => x.IsDefault).Picture
-							}
+							user = u
 						}
 					);
 				}

@@ -14,7 +14,7 @@ namespace iGO.API.Models
 		{
 			data = new Object () {
 				matchID = Match.Id,
-				isMatch = (Match.IsFirstUserLike ?? false) && 
+				isMatch = (Match.IsFirstUserLike) && 
 					(Match.IsSecondUserLike ?? false)
 			};
 		}

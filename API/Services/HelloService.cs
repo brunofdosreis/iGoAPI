@@ -27,7 +27,7 @@ namespace iGO.API.Services
 		{
 			foreach (HelloCreateRequest.Object user in Request.user)
 			{
-				JsonServiceClient client = new JsonServiceClient ();//base.Request.Headers["Host"]);
+				JsonServiceClient client = new JsonServiceClient ();
 
 				client.AddHeader ("API-Key", "Android");
 
