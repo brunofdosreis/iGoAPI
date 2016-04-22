@@ -27,7 +27,7 @@ namespace iGO.API.Services
 					&& x.Token == deviceToken.Token
 			).ToList();
 
-			if (deviceToken == null || !deviceTokens.Any())
+			if (deviceTokens == null || !deviceTokens.Any())
 			{
 				deviceToken.Save();
 			}
