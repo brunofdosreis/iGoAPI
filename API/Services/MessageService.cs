@@ -7,6 +7,7 @@ using ServiceStack;
 using ServiceStack.ServiceInterface;
 
 using iGO.API.Models;
+using iGO.API.Helpers;
 using iGO.Domain.Entities;
 using iGO.Repositories;
 using iGO.Repositories.Extensions;
@@ -38,6 +39,13 @@ namespace iGO.API.Services
 			message.FromUser = GetAuthenticatedUser();
 
 			message.Save();
+
+			User user = message.ToUser;
+
+			if (user.DeviceToken != null && user.DeviceToken.Any ())
+			{
+				PushHelper.SendNotification(user.DeviceToken, "Nova mensagem de " + message.FromUser);
+			}
 
 			return new BaseResponse();
 		}

@@ -19,3 +19,10 @@
 /Users/brunofdosreis/Projects/iGO/GIT/iGO/API/bin/MySql.Data.dll
 /Users/brunofdosreis/Projects/iGO/GIT/iGO/API/bin/Facebook.dll
 /Users/brunofdosreis/Projects/iGO/GIT/iGO/API/bin/API.dll.config
+/Users/brunofdosreis/Projects/iGO/GIT/iGO/API/bin/PushSharp.Core.dll
+/Users/brunofdosreis/Projects/iGO/GIT/iGO/API/bin/PushSharp.Amazon.dll
+/Users/brunofdosreis/Projects/iGO/GIT/iGO/API/bin/PushSharp.Apple.dll
+/Users/brunofdosreis/Projects/iGO/GIT/iGO/API/bin/PushSharp.Firefox.dll
+/Users/brunofdosreis/Projects/iGO/GIT/iGO/API/bin/PushSharp.Windows.dll
+/Users/brunofdosreis/Projects/iGO/GIT/iGO/API/bin/PushSharp.Google.dll
+/Users/brunofdosreis/Projects/iGO/GIT/iGO/API/bin/PushSharp.Blackberry.dll

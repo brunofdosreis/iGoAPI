@@ -6,6 +6,7 @@ using ServiceStack;
 using ServiceStack.ServiceInterface;
 
 using iGO.API.Models;
+using iGO.API.Helpers;
 using iGO.Repositories;
 using iGO.Repositories.Extensions;
 using iGO.Domain.Entities;
@@ -19,12 +20,12 @@ namespace iGO.API.Services
 		{
 			User AuthenticatedUser = GetAuthenticatedUser();
 
-			User User = new User().Get(Request.userID);
+			User user = new User().Get(Request.userID);
 
 			Event event_ = new Event().Get(Request.eventID);
 
 			Match match = new BaseRepository<Match>().List (x => 
-				x.FirstUser == User && x.SecondUser == AuthenticatedUser && 
+				x.FirstUser == user && x.SecondUser == AuthenticatedUser && 
 				x.Event == event_).FirstOrDefault();
 
 			if (match == null)
@@ -34,7 +35,7 @@ namespace iGO.API.Services
 					FirstUser = AuthenticatedUser,
 					DateFirstUser = DateTime.Now,
 					IsFirstUserLike = Request.isLike,
-					SecondUser = User
+					SecondUser = user
 				};
 			}
 			else
@@ -44,6 +45,18 @@ namespace iGO.API.Services
 			}
 
 			match.Save();
+
+			if (match.IsFirstUserLike
+			    && match.IsSecondUserLike != null
+			    && match.IsSecondUserLike == true)
+			{
+				User firstUser = match.FirstUser;
+
+				if (firstUser.DeviceToken != null && firstUser.DeviceToken.Any ())
+				{
+					PushHelper.SendNotification(user.DeviceToken, "Novo Match!");
+				}
+			}
 
 			return new PostMatchLikeResponse(match);
 		}
