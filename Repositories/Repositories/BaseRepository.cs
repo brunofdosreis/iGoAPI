@@ -51,7 +51,7 @@ namespace iGO.Repositories
 		{
 			if (Transaction !=null && !Transaction.WasCommitted && !Transaction.WasRolledBack)
 			{
-				Transaction.Commit ();
+				Transaction.Commit();
 			}
 		}
 

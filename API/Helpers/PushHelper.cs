@@ -26,11 +26,11 @@ namespace iGO.API.Helpers
 
 			if (deviceTokens.Any(x => x.Platform.ToLower() == "ios"))
 			{
-				/*sendAPNS(deviceTokens
+				sendAPNS(deviceTokens
 						.Where (x => x.Platform.ToLower() == "ios")
 						.Select (y => y.Token).ToArray(),
 					text
-				);*/
+				);
 			}
 		}
 
@@ -130,7 +130,7 @@ namespace iGO.API.Helpers
 			// Wire up events
 			apnsBroker.OnNotificationFailed += (notification, aggregateEx) => {
 
-				/*aggregateEx.Handle (ex => {
+				aggregateEx.Handle (ex => {
 
 					// See what kind of exception it was to further diagnose
 					if (ex is ApnsNotificationException) {
@@ -149,11 +149,11 @@ namespace iGO.API.Helpers
 
 					// Mark it as handled
 					return true;
-				});*/
+				});
 			};
 
 			apnsBroker.OnNotificationSucceeded += (notification) => {
-				//Console.WriteLine ("Apple Notification Sent!");
+				Console.WriteLine ("Apple Notification Sent!");
 			};
 
 			// Start the broker
