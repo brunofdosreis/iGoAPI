@@ -65,26 +65,74 @@ namespace iGO.Repositories
 
 		public virtual void Save(T entity)
 		{
-			Session.SaveOrUpdate(entity);
-			Session.Flush();
+			Transaction = Session.BeginTransaction();
+
+			try
+			{
+				Session.SaveOrUpdate(entity);
+				Transaction.Commit();
+				Session.Flush();
+			}
+			catch (Exception ex)
+			{
+				Transaction.Rollback();
+				// log exception
+				throw;
+			}
 		}
 
 		public virtual void Save<T>(T entity)
 		{
-			Session.SaveOrUpdate(entity);
-			Session.Flush();
+			Transaction = Session.BeginTransaction();
+
+			try
+			{
+				Session.SaveOrUpdate(entity);
+				Transaction.Commit();
+				Session.Flush();
+			}
+			catch (Exception ex)
+			{
+				Transaction.Rollback();
+				// log exception
+				throw;
+			}
 		}
 
 		public virtual void Delete(T entity)
 		{
-			Session.Delete(entity);
-			Session.Flush();
+			Transaction = Session.BeginTransaction();
+
+			try
+			{
+				Session.Delete(entity);
+				Transaction.Commit();
+				Session.Flush();
+			}
+			catch (Exception ex)
+			{
+				Transaction.Rollback();
+				// log exception
+				throw;
+			}
 		}
 
 		public virtual void Delete<T>(T entity)
 		{
-			Session.Delete(entity);
-			Session.Flush();
+			Transaction = Session.BeginTransaction();
+
+			try
+			{
+				Session.Delete(entity);
+				Transaction.Commit();
+				Session.Flush();
+			}
+			catch (Exception ex)
+			{
+				Transaction.Rollback();
+				// log exception
+				throw;
+			}
 		}
 
 		public virtual T Get(int Id)

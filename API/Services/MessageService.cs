@@ -21,8 +21,10 @@ namespace iGO.API.Services
 		{
 			Match match = new Match().Get(Request.matchID);
 
-			IEnumerable<Message> message = match.Message.Where(x =>
-				x.Created >= DateTime.ParseExact(Request.date, "yyyy-MM-dd'T'HH:mm:ss'GTM'zzz", CultureInfo.InvariantCulture)
+			IEnumerable<Message> message = new BaseRepository<Message> ().List (x => 
+				x.Match == match 
+				&& x.Created >= DateTime.ParseExact(
+					Request.date, "yyyy-MM-dd'T'HH:mm:ss'GTM'zzz", CultureInfo.InvariantCulture)
 			);
 
 			if (Request.limit > 0)

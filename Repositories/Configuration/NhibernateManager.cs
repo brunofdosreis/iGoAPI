@@ -31,6 +31,7 @@ namespace iGO.Repositories.Configuration
 						ConfigurationManager.ConnectionStrings["DataConnectionSting"].ConnectionString
 					)
 				)
+				.Cache(x => x.Not.UseSecondLevelCache())
 				.Mappings(m => m.FluentMappings.AddFromAssembly(Assembly.GetExecutingAssembly()))
 				.ExposeConfiguration(cfg => new SchemaExport(cfg).Create(true, true))
 				.BuildSessionFactory();
