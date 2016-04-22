@@ -15,7 +15,7 @@ namespace iGO.Repositories.Mappings
 			Map(x => x.Token);
 			Map(x => x.Platform);
 
-			References(x => x.User).Cascade.All();
+			References(x => x.User);
 		}
 	}
 }

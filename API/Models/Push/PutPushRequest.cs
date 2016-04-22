@@ -6,7 +6,7 @@ using iGO.Domain.Entities;
 
 namespace iGO.API.Models
 {
-	[Route("/{Version}/push", "PUT")]
+	[Route("/{Version}/push/token", "PUT")]
 	public class PutPushRequest : BaseRequest<DeviceToken>, IReturn<BaseResponse>
 	{
 		public string platform { get; set; }
