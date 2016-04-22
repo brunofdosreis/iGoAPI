@@ -18,28 +18,26 @@ namespace iGO.API.Services
 	{
 		public object Get(GetMessagesRequest Request)
 		{
-			Match Match = new Match().Get(Request.matchID);
+			Match match = new Match().Get(Request.matchID);
 
-			IQueryable<Message> Message = new BaseRepository<Message> ().List (x => 
-				((x.FromUser == Match.FirstUser && x.ToUser == Match.SecondUser) ||
-				(x.FromUser == Match.SecondUser && x.ToUser == Match.FirstUser)) &&
-				x.Created <= DateTime.ParseExact(Request.date, "yyyy-MM-dd'T'HH:mm:ss'GTM'zzz", CultureInfo.InvariantCulture)
+			IEnumerable<Message> message = match.Message.Where(x =>
+				x.Created >= DateTime.ParseExact(Request.date, "yyyy-MM-dd'T'HH:mm:ss'GTM'zzz", CultureInfo.InvariantCulture)
 			);
 
 			if (Request.limit > 0)
 			{
-				Message = Message.Take(Request.limit);
+				message = message.Take(Request.limit);
 			}
 
-			return new GetMessagesResponse(Message.ToArray());
+			return new GetMessagesResponse(message.ToArray());
 		}
 
 		public object Post(PostMessageRequest Request)
 		{
-			Message Message = Request.GetEntity();
-			Message.FromUser = GetAuthenticatedUser();
+			Message message = Request.GetEntity();
+			message.FromUser = GetAuthenticatedUser();
 
-			Message.Save();
+			message.Save();
 
 			return new BaseResponse();
 		}

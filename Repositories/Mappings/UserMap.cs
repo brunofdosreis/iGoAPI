@@ -27,7 +27,11 @@ namespace iGO.Repositories.Mappings
 
 			HasManyToMany(x => x.Event).Table("UserEvent").Cascade.All();
 
-			HasMany(x => x.Match).Cascade.All();
+			HasMany(x => x.FirstUserMatch)
+				.KeyColumns.Add("FirstUser_id");
+
+			HasMany(x => x.SecondUserMatch)
+				.KeyColumns.Add("SecondUser_id");
 		}
 	}
 }

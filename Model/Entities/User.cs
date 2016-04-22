@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace iGO.Domain.Entities
 {
@@ -15,6 +16,8 @@ namespace iGO.Domain.Entities
 		public virtual IEnumerable<UserPictures> UserPictures { get; set; }
 		public virtual IEnumerable<DeviceToken> DeviceToken { get; set; }
 		public virtual IEnumerable<Event> Event { get; set; }
-		public virtual IEnumerable<Match> Match { get; set; }
+		public virtual IEnumerable<Match> FirstUserMatch { get; set; }
+		public virtual IEnumerable<Match> SecondUserMatch { get; set; }
+		public virtual IEnumerable<Match> Match { get { return FirstUserMatch.Concat(SecondUserMatch); } }
 	}
 }

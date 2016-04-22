@@ -13,6 +13,8 @@ namespace iGO.API.Models
 
 		public GetMessagesResponse(Message[] Message)
 		{
+			data = new Object[] {};
+
 			List<Object> Messages = new List<Object>();
 
 			foreach (Message message in Message)
