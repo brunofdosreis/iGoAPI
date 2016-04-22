@@ -7,14 +7,20 @@ using iGO.Domain.Entities;
 namespace iGO.API.Models
 {
 	[Route("/{Version}/push")]
-	public class DeletePushRequest : BaseRequest<Object>, IReturn<BaseResponse>
+	public class DeletePushRequest : BaseRequest<DeviceToken>, IReturn<BaseResponse>
 	{
 		public string platform { get; set; }
 		public string token { get; set; }
 
-		public override Object GetEntity()
+		public override DeviceToken GetEntity()
 		{
-			return null;
+			DeviceToken deviceToken = new DeviceToken()
+			{
+				Platform = platform,
+				Token = token
+			};
+
+			return deviceToken;
 		}
 	}
 }

@@ -6,15 +6,21 @@ using iGO.Domain.Entities;
 
 namespace iGO.API.Models
 {
-	[Route("/{Version}/push")]
-	public class PutPushRequest : BaseRequest<Object>, IReturn<BaseResponse>
+	[Route("/{Version}/push", "PUT")]
+	public class PutPushRequest : BaseRequest<DeviceToken>, IReturn<BaseResponse>
 	{
 		public string platform { get; set; }
 		public string token { get; set; }
 
-		public override Object GetEntity()
+		public override DeviceToken GetEntity()
 		{
-			return null;
+			DeviceToken deviceToken = new DeviceToken()
+			{
+				Platform = platform,
+				Token = token
+			};
+
+			return deviceToken;
 		}
 	}
 }
