@@ -6,7 +6,7 @@ using iGO.Domain.Entities;
 
 namespace iGO.API.Models
 {
-	[Route("/{Version}/push")]
+	[Route("/{Version}/push", "DELETE")]
 	public class DeletePushRequest : BaseRequest<DeviceToken>, IReturn<BaseResponse>
 	{
 		public string platform { get; set; }

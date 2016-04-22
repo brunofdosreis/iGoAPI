@@ -35,7 +35,7 @@ namespace iGO.API.Services
 			return new BaseResponse();
 		}
 
-		public object Any(DeletePushRequest Request)
+		public object Delete(DeletePushRequest Request)
 		{
 			DeviceToken deviceToken = Request.GetEntity();
 
