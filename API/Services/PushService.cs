@@ -46,9 +46,9 @@ namespace iGO.API.Services
 				&& x.Token == deviceToken.Token
 			).ToList();
 
-			if (deviceToken == null || !deviceTokens.Any())
+			if (deviceTokens != null && deviceTokens.Any())
 			{
-				deviceToken.Delete();
+				deviceTokens.First().Delete();
 			}
 
 			return new BaseResponse();
