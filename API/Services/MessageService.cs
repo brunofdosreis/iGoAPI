@@ -44,9 +44,12 @@ namespace iGO.API.Services
 
 			User user = message.ToUser;
 
-			if (user.DeviceToken != null && user.DeviceToken.Any ())
+			List<DeviceToken> deviceToken = new BaseRepository<DeviceToken> ().List (x =>
+				x.User.Id == user.Id).ToList();
+
+			if (deviceToken != null && deviceToken.Any ())
 			{
-				PushHelper.SendNotification(user.DeviceToken, "Nova mensagem de " + message.FromUser.Name);
+				PushHelper.SendNotification(deviceToken, "Nova mensagem de " + message.FromUser.Name);
 			}
 
 			return new BaseResponse();

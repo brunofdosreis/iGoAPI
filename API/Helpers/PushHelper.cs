@@ -122,7 +122,7 @@ namespace iGO.API.Helpers
 		{
 			// Configuration (NOTE: .pfx can also be used here)
 			var config = new ApnsConfiguration (ApnsConfiguration.ApnsServerEnvironment.Sandbox, 
-				"Certificates_Dev_iGo.p12", "iGo@2016");
+				System.IO.Path.GetFullPath("Certificates_Dev_iGoDev.p12"), "iGo@2016");
 
 			// Create a new broker
 			var apnsBroker = new ApnsServiceBroker (config);
