@@ -52,9 +52,12 @@ namespace iGO.API.Services
 			{
 				User firstUser = match.FirstUser;
 
-				if (firstUser.DeviceToken != null && firstUser.DeviceToken.Any ())
+				List<DeviceToken> deviceToken = new BaseRepository<DeviceToken> ().List (x =>
+					x.User.Id == firstUser.Id).ToList();
+
+				if (deviceToken != null && deviceToken.Any ())
 				{
-					PushHelper.SendNotification(user.DeviceToken, "Novo Match!");
+					PushHelper.SendNotification(deviceToken, "Novo Match!");
 				}
 			}
 
