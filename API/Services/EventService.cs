@@ -24,14 +24,14 @@ namespace iGO.API.Services
 		{
 			User user = base.GetAuthenticatedUser();
 
-			List<Event> _events = new List<Event>();
+			List<Event> _events = new BaseRepository<Event>().List(x => x.User.Any(y => y.Id == user.Id)).ToList();
 
-			if (user.Event != null) {
+			if (_events != null) {
 
-				_events = user.Event.Where (x => 
-					(x.EndDate == null && x.StartDate < DateTime.Now.AddHours (6))
+				_events = _events.Where (x => 
+					(x.EndDate == null && x.StartDate < DateTime.Now.AddHours(6))
 					|| x.EndDate < DateTime.Now
-				).ToList ();
+				).ToList();
 			}
 
 			try {
