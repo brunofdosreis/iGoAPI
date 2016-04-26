@@ -3,6 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 
 using iGO.Domain.Entities;
+using iGO.Repositories;
 
 namespace iGO.API.Models
 {
@@ -29,20 +30,20 @@ namespace iGO.API.Models
 					{
 						ID = _user.Id,
 						name = _user.Name,
-						birthday = _user.Birthday.ToString("yyyy-MM-dd'T'HH:mm:ss'GTM'zzz"),
+						birthday = _user.Birthday.ToString("yyyy-MM-dd'T'HH:mm:ss'GMT'zzz"),
 						gender = _user.Gender,
 						pictures = new List<Picture>()
 					};
 
-					Match match = user.Match.FirstOrDefault(x => x.FirstUser.Id == _user.Id
-						|| x.SecondUser.Id ==_user.Id);
+					Match match = new BaseRepository<Match>().List(x => x.FirstUser.Id == _user.Id
+						|| x.SecondUser.Id ==_user.Id).FirstOrDefault();
 
 					if (match != null)
 					{
 						u.matchID = match.Id;
 					}
 
-					u.events = user.Event.Count(x => x.User.Any(y => y.Id == _user.Id));
+					u.events = new BaseRepository<Event>().List(x => x.User.Any(y => y.Id == _user.Id)).Count();
 
 					foreach(UserPictures _picture in _user.UserPictures)
 					{

@@ -22,7 +22,7 @@ namespace iGO.API.Models
 				Messages.Add (new Object()
 					{
 						ID = message.Id,
-						date = message.Created.ToString("yyyy-MM-dd'T'HH:mm:ss'GTM'zzz"),
+						date = message.Created.ToString("yyyy-MM-dd'T'HH:mm:ss'GMT'zzz"),
 						matchID = message.Match.Id,
 						fromUserID = message.FromUser.Id,
 						toUserID = message.ToUser.Id,

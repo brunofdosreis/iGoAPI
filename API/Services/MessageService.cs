@@ -24,7 +24,7 @@ namespace iGO.API.Services
 			IEnumerable<Message> message = new BaseRepository<Message> ().List (x => 
 				x.Match == match 
 				&& x.Created >= DateTime.ParseExact(
-					Request.date, "yyyy-MM-dd'T'HH:mm:ss'GTM'zzz", CultureInfo.InvariantCulture)
+					Request.date, "yyyy-MM-dd'T'HH:mm:ss'GMT'zzz", CultureInfo.InvariantCulture)
 			);
 
 			if (Request.limit > 0)

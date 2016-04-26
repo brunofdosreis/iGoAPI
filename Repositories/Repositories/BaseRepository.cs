@@ -71,7 +71,7 @@ namespace iGO.Repositories
 			{
 				Session.SaveOrUpdate(entity);
 				Transaction.Commit();
-				Session.Flush();
+				// Session.Flush();
 			}
 			catch (Exception ex)
 			{
@@ -89,7 +89,7 @@ namespace iGO.Repositories
 			{
 				Session.SaveOrUpdate(entity);
 				Transaction.Commit();
-				Session.Flush();
+				// Session.Flush();
 			}
 			catch (Exception ex)
 			{
@@ -107,7 +107,7 @@ namespace iGO.Repositories
 			{
 				Session.Delete(entity);
 				Transaction.Commit();
-				Session.Flush();
+				// Session.Flush();
 			}
 			catch (Exception ex)
 			{
@@ -125,7 +125,7 @@ namespace iGO.Repositories
 			{
 				Session.Delete(entity);
 				Transaction.Commit();
-				Session.Flush();
+				// Session.Flush();
 			}
 			catch (Exception ex)
 			{

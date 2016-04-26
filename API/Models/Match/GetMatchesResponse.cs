@@ -46,7 +46,7 @@ namespace iGO.API.Models
 						u = new Object.User() {
 							id = match.SecondUser.Id,
 							name = match.SecondUser.Name,
-							birthday = match.SecondUser.Birthday.ToString ("yyyy-MM-dd'T'HH:mm:ss'GTM'zzz"),
+							birthday = match.SecondUser.Birthday.ToString ("yyyy-MM-dd'T'HH:mm:ss'GMT'zzz"),
 							gender = match.SecondUser.Gender,
 							picture = match.SecondUser.UserPictures.First (x => x.IsDefault).Picture
 						};
@@ -56,7 +56,7 @@ namespace iGO.API.Models
 						u = new Object.User() {
 							id = match.FirstUser.Id,
 							name = match.FirstUser.Name,
-							birthday = match.FirstUser.Birthday.ToString ("yyyy-MM-dd'T'HH:mm:ss'GTM'zzz"),
+							birthday = match.FirstUser.Birthday.ToString ("yyyy-MM-dd'T'HH:mm:ss'GMT'zzz"),
 							gender = match.FirstUser.Gender,
 							picture = match.FirstUser.UserPictures.First (x => x.IsDefault).Picture
 						};
