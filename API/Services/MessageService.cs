@@ -42,6 +42,10 @@ namespace iGO.API.Services
 
 			message.Save();
 
+			message.Match.Updated = DateTime.Now;
+
+			message.Match.Save();
+
 			User user = message.ToUser;
 
 			List<DeviceToken> deviceToken = new BaseRepository<DeviceToken> ().List (x =>

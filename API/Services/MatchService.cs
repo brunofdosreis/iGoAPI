@@ -74,7 +74,8 @@ namespace iGO.API.Services
 				(x.FirstUser == user || x.SecondUser == user)
 				&&
 				(x.IsFirstUserLike && x.IsSecondUserLike != null && x.IsSecondUserLike == true)
-			);
+			).OrderByDescending(y => y.Created)
+				.OrderByDescending(x => x.Updated);
 
 			GetMatchesResponse Response = new GetMatchesResponse(user, Matches.ToList());
 
