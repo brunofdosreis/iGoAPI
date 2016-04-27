@@ -13,7 +13,7 @@ namespace iGO.API.Helpers
 {
 	public static class PushHelper
 	{
-		public static void SendNotification(IEnumerable<DeviceToken> deviceTokens, string text)
+		public static void SendNotification(IEnumerable<DeviceToken> deviceTokens, string text, string type)
 		{
 			if (deviceTokens.Any(x => x.Platform.ToLower() == "android"))
 			{
@@ -29,12 +29,13 @@ namespace iGO.API.Helpers
 				sendAPNS(deviceTokens
 						.Where (x => x.Platform.ToLower() == "ios")
 						.Select (y => y.Token).ToArray(),
-					text
+					text,
+					type
 				);
 			}
 		}
 
-		private static void sendGCM(string[] deviceTokens, string text)
+		private static void sendGCM(string[] deviceTokens, string text, string type)
 		{
 			// Configuration
 			var config = new GcmConfiguration ("GCM-SENDER-ID", "AUTH-TOKEN", null);
@@ -118,7 +119,7 @@ namespace iGO.API.Helpers
 			gcmBroker.Stop ();
 		}
 
-		private static void sendAPNS(string[] deviceTokens, string text)
+		private static void sendAPNS(string[] deviceTokens, string text, string type)
 		{
 			// Configuration (NOTE: .pfx can also be used here)
 			var config = new ApnsConfiguration (ApnsConfiguration.ApnsServerEnvironment.Sandbox, 
@@ -163,7 +164,7 @@ namespace iGO.API.Helpers
 				// Queue a notification to send
 				apnsBroker.QueueNotification (new ApnsNotification {
 					DeviceToken = deviceToken,
-					Payload = JObject.Parse ("{\"aps\":{\"alert\":\"" + text + "\"}}")
+					Payload = JObject.Parse ("{\"aps\":{\"alert\":\"" + text + "\"}, \"type\": \"" + type + "\"}")
 				});
 			}
 
