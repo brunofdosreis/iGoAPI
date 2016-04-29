@@ -112,7 +112,7 @@ namespace iGO.API.Services
 			user = base.GetAuthenticatedUser();
 
 			List<Event> Events = user.Event.Where(x => (x.EndDate == null && x.StartDate.AddHours(6) > DateTime.Now) ||
-				x.EndDate > DateTime.Now).ToList();
+				x.EndDate > DateTime.Now).OrderBy(y => y.StartDate).ToList();
 
 			Events = Events.Skip(Request.offset).ToList();
 

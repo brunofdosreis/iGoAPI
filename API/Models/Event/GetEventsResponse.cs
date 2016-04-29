@@ -35,7 +35,7 @@ namespace iGO.API.Models
 					);
 				}
 
-				events = _events.OrderBy(x => x.date);
+				events = _events;
 			}
 
 			public class Event
