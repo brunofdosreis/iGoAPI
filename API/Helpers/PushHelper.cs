@@ -164,7 +164,7 @@ namespace iGO.API.Helpers
 				// Queue a notification to send
 				apnsBroker.QueueNotification (new ApnsNotification {
 					DeviceToken = deviceToken,
-					Payload = JObject.Parse ("{\"aps\":{\"alert\":\"" + text + "\"}, \"type\": \"" + type + "\"}")
+					Payload = JObject.Parse ("{\"aps\":{\"alert\":\"" + text + "\", \"badge\" : \"1\" }, \"type\": \"" + type + "\"}")
 				});
 			}
 
