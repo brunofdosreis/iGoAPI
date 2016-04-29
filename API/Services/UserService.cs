@@ -182,7 +182,7 @@ namespace iGO.API.Services
 			{
 				UserPictures.Add (new UserPictures()
 					{
-						Id = picture.ID,
+						//Id = picture.ID,
 						Picture = picture.picture,
 						IsDefault = picture.isDefault,
 						User = User
