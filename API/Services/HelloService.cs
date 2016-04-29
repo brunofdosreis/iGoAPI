@@ -25,6 +25,8 @@ namespace iGO.API.Services
 
 		public object Any(HelloCreateRequest Request)
 		{
+			NhibernateManager.CreateDatabase();
+
 			foreach (HelloCreateRequest.Object user in Request.user)
 			{
 				JsonServiceClient client = new JsonServiceClient ();
