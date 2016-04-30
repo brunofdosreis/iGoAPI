@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using NHibernate;
 using NHibernate.Linq;
 
+using iGO.Domain.Entities;
 using iGO.Repositories.Configuration;
 
 namespace iGO.Repositories
@@ -63,12 +64,14 @@ namespace iGO.Repositories
 			}
 		}
 
-		public virtual void Save(T entity)
+		public virtual void Save(BaseEntity<T> entity)
 		{
 			Transaction = Session.BeginTransaction();
 
 			try
 			{
+				entity.Updated = DateTime.Now;
+
 				Session.SaveOrUpdate(entity);
 				Transaction.Commit();
 				// Session.Flush();
@@ -81,12 +84,14 @@ namespace iGO.Repositories
 			}
 		}
 
-		public virtual void Save<T>(T entity)
+		public virtual void Save<T>(BaseEntity<T> entity)
 		{
 			Transaction = Session.BeginTransaction();
 
 			try
 			{
+				entity.Updated = DateTime.Now;
+
 				Session.SaveOrUpdate(entity);
 				Transaction.Commit();
 				// Session.Flush();

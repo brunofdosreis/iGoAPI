@@ -45,16 +45,19 @@ namespace iGO.API.Models
 
 				List<Event> _events = new List<Event>();
 
-				foreach(iGO.Domain.Entities.Event _event in User.Event)
+				if (User.Event != null)
 				{
-					_events.Add(new Event()
-						{
-							ID = _event.Id,
-							title = _event.Title,
-							desciption = _event.Description,
-							date = _event.StartDate.ToString("yyyy-MM-dd'T'HH:mm:ss'GMT'zzz")
-						}
-					);
+					foreach(iGO.Domain.Entities.Event _event in User.Event)
+					{
+						_events.Add(new Event()
+							{
+								ID = _event.Id,
+								title = _event.Title,
+								desciption = _event.Description,
+								date = _event.StartDate.ToString("yyyy-MM-dd'T'HH:mm:ss'GMT'zzz")
+							}
+						);
+					}
 				}
 
 				events = _events;

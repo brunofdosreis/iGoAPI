@@ -5,7 +5,6 @@ namespace iGO.Domain.Entities
 {
 	public class Match : BaseEntity<Match>
 	{
-		public virtual DateTime? Updated { get; set; }
 		public virtual bool IsFirstUserLike { get; set; }
 		public virtual bool? IsSecondUserLike { get; set; }
 		public virtual DateTime DateFirstUser { get; set; }

@@ -12,6 +12,7 @@ namespace iGO.Repositories.Mappings
 		{
 			Id(x => x.Id);
 			Map(x => x.Created);
+			Map(x => x.Updated);
 			Map(x => x.FacebookId);
 			Map(x => x.Title);
 			Map(x => x.Description).CustomSqlType("nvarchar (4000)");

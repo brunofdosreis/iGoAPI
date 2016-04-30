@@ -42,7 +42,9 @@ namespace iGO.API.Services
 
 				string after = "";
 
-				if (Request.offset == 0)
+				if (Request.offset == 0 &&
+					(user.Updated > DateTime.Now.AddMinutes(15)
+						|| (user.Event == null || user.Event.Count() == 0)))
 				{
 					do
 					{
@@ -96,16 +98,16 @@ namespace iGO.API.Services
 						}
 
 					} while (after != "");
+
+					user.Event = _events;
+
+					user.Save();
 				}
 			}
 			catch (FacebookOAuthException)
 			{
 				throw new HttpError(HttpStatusCode.Unauthorized);
 			}
-
-			user.Event = _events;
-
-			user.Save();
 
 			NhibernateManager.GetSession().Clear();
 
