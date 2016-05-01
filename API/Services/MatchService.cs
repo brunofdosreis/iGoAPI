@@ -57,7 +57,7 @@ namespace iGO.API.Services
 
 				if (deviceToken != null && deviceToken.Any ())
 				{
-					PushHelper.SendNotification(deviceToken, "Novo Match com " + user.Name, "match");
+					PushHelper.SendNotification(deviceToken, "Novo Match com " + match.SecondUser.Name, "match");
 				}
 			}
 
