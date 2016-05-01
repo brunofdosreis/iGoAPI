@@ -177,7 +177,12 @@ namespace iGO.API
 
 		protected void Application_EndRequest(object sender, EventArgs e)
 		{
-			//((NHibernate.ISession)Context.Items["hibernateSession"]).Close();
+			NHibernate.ISession session = ((NHibernate.ISession)Context.Items["hibernateSession"]);
+
+			if (session != null && session.IsOpen)
+			{
+				session.Close();
+			}
 		}
 	}
 }
