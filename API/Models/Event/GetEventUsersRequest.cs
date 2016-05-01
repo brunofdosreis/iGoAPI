@@ -13,9 +13,9 @@ namespace iGO.API.Models
 		public int ID { get; set; }
 		public int limit { get; set; }
 
-		public override Event GetEntity()
+		public override Event GetEntity(NHibernate.ISession session)
 		{
-			Event Event = new Event().Get(ID);
+			Event Event = new Event().Get(ID, session);
 
 			return Event;
 		}

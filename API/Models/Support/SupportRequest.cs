@@ -11,7 +11,7 @@ namespace iGO.API.Models
 	{
 		public string platform { get; set; }
 
-		public override Support GetEntity()
+		public override Support GetEntity(NHibernate.ISession session)
 		{
 			Support Support = new Support();
 

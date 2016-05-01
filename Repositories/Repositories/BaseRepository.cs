@@ -23,10 +23,10 @@ namespace iGO.Repositories
 
 			get 
 			{
-				if (_Session == null)
+				/*if (_Session == null || !_Session.IsOpen)
 				{
 					_Session = NhibernateManager.GetSession();
-				}
+				}*/
 
 				return _Session;
 			}
@@ -34,9 +34,9 @@ namespace iGO.Repositories
 
 		private ITransaction Transaction { get; set; }
 
-		public BaseRepository()
+		/*public BaseRepository()
 		{
-		}
+		}*/
 
 		public BaseRepository(ISession Session)
 		{
@@ -79,6 +79,7 @@ namespace iGO.Repositories
 			catch (Exception ex)
 			{
 				Transaction.Rollback();
+				Session.Close();
 				// log exception
 				throw;
 			}
@@ -99,6 +100,7 @@ namespace iGO.Repositories
 			catch (Exception ex)
 			{
 				Transaction.Rollback();
+				Session.Close();
 				// log exception
 				throw;
 			}
@@ -117,6 +119,7 @@ namespace iGO.Repositories
 			catch (Exception ex)
 			{
 				Transaction.Rollback();
+				Session.Close();
 				// log exception
 				throw;
 			}
@@ -135,6 +138,7 @@ namespace iGO.Repositories
 			catch (Exception ex)
 			{
 				Transaction.Rollback();
+				Session.Close();
 				// log exception
 				throw;
 			}

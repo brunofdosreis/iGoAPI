@@ -12,7 +12,7 @@ namespace iGO.API.Models
 		public string platform { get; set; }
 		public string token { get; set; }
 
-		public override DeviceToken GetEntity()
+		public override DeviceToken GetEntity(NHibernate.ISession session)
 		{
 			DeviceToken deviceToken = new DeviceToken()
 			{

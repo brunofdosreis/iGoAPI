@@ -19,7 +19,7 @@ namespace iGO.API.Services
 	{
 		public object Post(PostUserRequest Request)
 		{
-			User User = Request.GetEntity();
+			User User = Request.GetEntity(((NHibernate.ISession)base.Request.Items["hibernateSession"]));
 
 			// TODO: Salvar a foto do perfil localmente
 
@@ -33,7 +33,8 @@ namespace iGO.API.Services
 
 				ulong facebookId = ulong.Parse(me.id);
 
-				User = new BaseRepository<User>().List(x => x.FacebookId == facebookId).FirstOrDefault();
+				User = new BaseRepository<User>(((NHibernate.ISession)base.Request.Items["hibernateSession"]))
+					.List(x => x.FacebookId == facebookId).FirstOrDefault();
 
 				if (User == null)
 				{
@@ -73,7 +74,7 @@ namespace iGO.API.Services
 				throw new HttpError(HttpStatusCode.Unauthorized);
 			}
 
-			User.Save();
+			User.Save(((NHibernate.ISession)base.Request.Items["hibernateSession"]));
 
 			return new BaseResponse();
 		}
@@ -81,11 +82,11 @@ namespace iGO.API.Services
 		[CustomAuthenticateToken]
 		public object Get(GetUserRequest Request)
 		{
-			User User = Request.GetEntity();
+			User User = Request.GetEntity(((NHibernate.ISession)base.Request.Items["hibernateSession"]));
 
 			if (User == null)
 			{
-				User = base.GetAuthenticatedUser();
+				User = base.GetAuthenticatedUser(((NHibernate.ISession)base.Request.Items["hibernateSession"]));
 			}
 
 			return new GetUserResponse(User);
@@ -94,7 +95,7 @@ namespace iGO.API.Services
 		[CustomAuthenticateToken]
 		public object Get(GetUserPreferencesRequest Request)
 		{
-			User User = base.GetAuthenticatedUser();
+			User User = base.GetAuthenticatedUser(((NHibernate.ISession)base.Request.Items["hibernateSession"]));
 
 			return new GetUserPreferencesResponse(User.UserPreferences);
 		}
@@ -102,9 +103,9 @@ namespace iGO.API.Services
 		[CustomAuthenticateToken]
 		public object Put(PutUserPreferencesRequest Request)
 		{
-			UserPreferences UserPreferences = Request.GetEntity();
+			UserPreferences UserPreferences = Request.GetEntity(((NHibernate.ISession)base.Request.Items["hibernateSession"]));
 
-			User User = base.GetAuthenticatedUser();
+			User User = base.GetAuthenticatedUser(((NHibernate.ISession)base.Request.Items["hibernateSession"]));
 
 			if (User.UserPreferences == null)
 			{
@@ -115,7 +116,7 @@ namespace iGO.API.Services
 			User.UserPreferences.AgeEnd = UserPreferences.AgeEnd;
 			User.UserPreferences.Gender = UserPreferences.Gender;
 
-			User.UserPreferences.Save();
+			User.UserPreferences.Save(((NHibernate.ISession)base.Request.Items["hibernateSession"]));
 
 			return new BaseResponse();
 		}
@@ -123,7 +124,7 @@ namespace iGO.API.Services
 		[CustomAuthenticateToken]
 		public object Get(GetUserPicturesRequest Request)
 		{
-			User User = GetAuthenticatedUser();
+			User User = GetAuthenticatedUser(((NHibernate.ISession)base.Request.Items["hibernateSession"]));
 
 			List<string> pictures = new List<string>();
 
@@ -174,7 +175,7 @@ namespace iGO.API.Services
 		[CustomAuthenticateToken]
 		public object Put(PutUserPicturesRequest Request)
 		{
-			User User = GetAuthenticatedUser();
+			User User = GetAuthenticatedUser(((NHibernate.ISession)base.Request.Items["hibernateSession"]));
 
 			List<UserPictures> UserPictures = new List<UserPictures>();
 
@@ -192,7 +193,7 @@ namespace iGO.API.Services
 
 			User.UserPictures = UserPictures;
 
-			User.Save();
+			User.Save(((NHibernate.ISession)base.Request.Items["hibernateSession"]));
 
 			return new BaseResponse();
 		}

@@ -13,7 +13,7 @@ namespace iGO.API.Models
 		public int ageEnd { get; set; }
 		public string[] gender { get; set; }
 
-		public override UserPreferences GetEntity()
+		public override UserPreferences GetEntity(NHibernate.ISession session)
 		{
 			UserPreferences UserPreferences = new UserPreferences();
 

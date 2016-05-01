@@ -22,9 +22,10 @@ namespace iGO.API.Services
 	{
 		public object Get(GetEventsRequest Request)
 		{
-			User user = base.GetAuthenticatedUser();
+			User user = base.GetAuthenticatedUser(((NHibernate.ISession)base.Request.Items["hibernateSession"]));
 
-			List<Event> _events = new BaseRepository<Event>().List(x => x.User.Any(y => y.Id == user.Id)).ToList();
+			List<Event> _events = new BaseRepository<Event>(((NHibernate.ISession)base.Request.Items["hibernateSession"]))
+				.List(x => x.User.Any(y => y.Id == user.Id)).ToList();
 
 			if (_events != null) {
 
@@ -64,7 +65,8 @@ namespace iGO.API.Services
 
 								ulong eventFacebookId = ulong.Parse(_event.id);
 
-								Event Event = new BaseRepository<Event>().List(x => x.FacebookId == eventFacebookId).FirstOrDefault();
+								Event Event = new BaseRepository<Event>(((NHibernate.ISession)base.Request.Items["hibernateSession"]))
+									.List(x => x.FacebookId == eventFacebookId).FirstOrDefault();
 
 								if (Event == null)
 								{
@@ -101,7 +103,7 @@ namespace iGO.API.Services
 
 					user.Event = _events;
 
-					user.Save();
+					user.Save(((NHibernate.ISession)base.Request.Items["hibernateSession"]));
 				}
 			}
 			catch (FacebookOAuthException)
@@ -109,9 +111,10 @@ namespace iGO.API.Services
 				throw new HttpError(HttpStatusCode.Unauthorized);
 			}
 
-			NhibernateManager.GetSession().Clear();
+			//NhibernateManager.GetSession().Clear();
+			((NHibernate.ISession)base.Request.Items["hibernateSession"]).Clear();
 
-			user = base.GetAuthenticatedUser();
+			user = base.GetAuthenticatedUser(((NHibernate.ISession)base.Request.Items["hibernateSession"]));
 
 			List<Event> Events = user.Event.Where(x => (x.EndDate == null && x.StartDate.AddHours(6) > DateTime.Now) ||
 				x.EndDate > DateTime.Now).OrderBy(y => y.StartDate).ToList();
@@ -128,11 +131,12 @@ namespace iGO.API.Services
 
 		public object Get(GetEventUsersRequest Request)
 		{
-			User user = base.GetAuthenticatedUser();
+			User user = base.GetAuthenticatedUser(((NHibernate.ISession)base.Request.Items["hibernateSession"]));
 
-			Event Event = Request.GetEntity();
+			Event Event = Request.GetEntity(((NHibernate.ISession)base.Request.Items["hibernateSession"]));
 
-			IQueryable<Match> Matches = new BaseRepository<Match>().List(x => x.Event.Id == Event.Id &&
+			IQueryable<Match> Matches = new BaseRepository<Match>(((NHibernate.ISession)base.Request.Items["hibernateSession"]))
+				.List(x => x.Event.Id == Event.Id &&
 				(
 					(x.FirstUser.Id == user.Id && x.IsFirstUserLike != null) || 
 					(x.SecondUser.Id == user.Id && x.IsSecondUserLike != null)
@@ -170,7 +174,7 @@ namespace iGO.API.Services
 				Users = Users.Take(Request.limit);
 			}
 
-			return new GetEventUsersResponse(user, Users);
+			return new GetEventUsersResponse(user, Users, ((NHibernate.ISession)base.Request.Items["hibernateSession"]));
 		}
 	}
 }

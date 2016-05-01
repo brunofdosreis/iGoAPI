@@ -14,12 +14,12 @@ namespace iGO.API.Models
 		public int toUserID { get; set; }
 		public string text { get; set; }
 
-		public override Message GetEntity()
+		public override Message GetEntity(NHibernate.ISession session)
 		{
 			Message Message = new Message();
 
-			Message.Match = new Match().Get(matchID);
-			Message.ToUser = new User().Get(toUserID);
+			Message.Match = new Match().Get(matchID, session);
+			Message.ToUser = new User().Get(toUserID, session);
 			Message.Text = text;
 
 			return Message;

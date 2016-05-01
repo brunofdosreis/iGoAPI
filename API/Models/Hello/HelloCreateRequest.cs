@@ -11,7 +11,7 @@ namespace iGO.API.Models
 	{
 		public Object[] user { get; set; }
 
-		public override object GetEntity()
+		public override object GetEntity(NHibernate.ISession session)
 		{
 			return null;
 		}

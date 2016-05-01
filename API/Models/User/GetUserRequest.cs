@@ -13,9 +13,9 @@ namespace iGO.API.Models
 	{
 		public int ID { get; set; }
 
-		public override User GetEntity()
+		public override User GetEntity(NHibernate.ISession session)
 		{
-			User User = new User().Get(ID);
+			User User = new User ().Get(ID, session);
 
 			return User;
 		}

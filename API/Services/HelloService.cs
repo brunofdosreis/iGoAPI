@@ -12,20 +12,20 @@ namespace iGO.API.Services
 	{
 		public object Any(HelloRequest request)
 		{
-			NhibernateManager.CreateDatabase();
+			new NhibernateManager().CreateDatabase();
 
-			Hello hello = request.GetEntity();
+			//Hello hello = request.GetEntity();
 
-			hello.Save();
+			//hello.Save();
 
-			Hello hello2 = new Hello().Get(hello.Id);
+			//Hello hello2 = new Hello().Get(hello.Id);
 
-			return new HelloResponse(hello2);
+			return new HelloResponse(new Hello());
 		}
 
 		public object Any(HelloCreateRequest Request)
 		{
-			NhibernateManager.CreateDatabase();
+			new NhibernateManager().CreateDatabase();
 
 			foreach (HelloCreateRequest.Object user in Request.user)
 			{

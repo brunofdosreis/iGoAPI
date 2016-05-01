@@ -9,7 +9,7 @@ namespace iGO.API.Models
 	[Route("/{Version}/user/preferences", "GET")]
 	public class GetUserPreferencesRequest : BaseRequest<Object>, IReturn<GetUserPreferencesResponse>
 	{
-		public override Object GetEntity()
+		public override Object GetEntity(NHibernate.ISession session)
 		{
 			return null;
 		}

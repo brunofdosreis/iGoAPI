@@ -9,7 +9,7 @@ namespace iGO.API.Models
 	[Route("/{Version}/user/pictures", "GET")]
 	public class GetUserPicturesRequest : BaseRequest<Object>, IReturn<GetUserPicturesResponse>
 	{
-		public override Object GetEntity()
+		public override Object GetEntity(NHibernate.ISession session)
 		{
 			return null;
 		}

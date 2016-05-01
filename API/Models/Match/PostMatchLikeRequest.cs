@@ -13,7 +13,7 @@ namespace iGO.API.Models
 		public int eventID { get; set; }
 		public bool isLike { get; set; }
 
-		public override Match GetEntity()
+		public override Match GetEntity(NHibernate.ISession session)
 		{
 			Match Match = new Match();
 

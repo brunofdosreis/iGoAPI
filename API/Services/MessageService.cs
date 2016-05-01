@@ -19,9 +19,9 @@ namespace iGO.API.Services
 	{
 		public object Get(GetMessagesRequest Request)
 		{
-			Match match = new Match().Get(Request.matchID);
+			Match match = new Match().Get(Request.matchID, ((NHibernate.ISession)base.Request.Items["hibernateSession"]));
 
-			IEnumerable<Message> message = new BaseRepository<Message> ().List (x => 
+			IEnumerable<Message> message = new BaseRepository<Message>(((NHibernate.ISession)base.Request.Items["hibernateSession"])).List (x => 
 				x.Match == match 
 				&& x.Created >= DateTime.ParseExact(
 					Request.date, "yyyy-MM-dd'T'HH:mm:ss'GMT'zzz", CultureInfo.InvariantCulture)
@@ -37,16 +37,16 @@ namespace iGO.API.Services
 
 		public object Post(PostMessageRequest Request)
 		{
-			Message message = Request.GetEntity();
-			message.FromUser = GetAuthenticatedUser();
+			Message message = Request.GetEntity(((NHibernate.ISession)base.Request.Items["hibernateSession"]));
+			message.FromUser = GetAuthenticatedUser(((NHibernate.ISession)base.Request.Items["hibernateSession"]));
 
-			message.Save();
+			message.Save(((NHibernate.ISession)base.Request.Items["hibernateSession"]));
 
-			message.Match.Save();
+			message.Match.Save(((NHibernate.ISession)base.Request.Items["hibernateSession"]));
 
 			User user = message.ToUser;
 
-			List<DeviceToken> deviceToken = new BaseRepository<DeviceToken> ().List (x =>
+			List<DeviceToken> deviceToken = new BaseRepository<DeviceToken>(((NHibernate.ISession)base.Request.Items["hibernateSession"])).List (x =>
 				x.User.Id == user.Id).ToList();
 
 			if (deviceToken != null && deviceToken.Any ())

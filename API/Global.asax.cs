@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 
 using iGO.Domain.Entities;
 using iGO.Repositories;
+using iGO.Repositories.Configuration;
 using iGO.API.Services;
 using iGO.API.Models;
 using iGO.API.Authorization;
@@ -17,6 +18,8 @@ namespace iGO.API
 {
 	public class Global : System.Web.HttpApplication
 	{
+		private NhibernateManager nhibernateManager;
+
 		public class AppHost : AppHostBase
 		{
 			//Tell ServiceStack the name of your application and where to find your services
@@ -60,7 +63,8 @@ namespace iGO.API
 					{
 						if (Version != null)
 						{
-							List<Support> Support = new BaseRepository<Support>().List (x => x.Platform == "API").ToList();
+							List<Support> Support = new BaseRepository<Support>(((NHibernate.ISession)req.Items["hibernateSession"]))
+								.List (x => x.Platform == "API").ToList();
 
 							Support oldest = Support.FirstOrDefault(x => x.Type == "oldest");
 
@@ -159,6 +163,21 @@ namespace iGO.API
 			ServiceStack.Licensing.RegisterLicense(@"3703-e1JlZjozNzAzLE5hbWU6QkYgUkVJUyBJTkZPUk1BVElDQSBMVERBLFR5cGU6SW5kaWUsSGFzaDpmd3BMazg2ampYeXQrc1Y5REdoNWdiZXZHaE14RllPdTFOUzdNbEMwbGlIbmNXTVdXRTdVNDJlQzBmZ1RiQzVsK2dnK2hLTk1YNlR5aUJvSmlvNU1weWpNNFUxSXZRcUVVQklIUHNDL0NHbXFPMVRkTTdUZFNnNDVYUGZ2ZzBkRWJ0WFNPaHpid2JtQTZhWVZFVFcwNjhvdmwxNGRSakVZRVgyQ05qREZVQk09LEV4cGlyeToyMDE3LTA0LTE0fQ==");
 
 			new AppHost().Init();
+		}
+
+		protected void Application_BeginRequest(object sender, EventArgs e)
+		{
+			if (nhibernateManager == null)
+			{
+				nhibernateManager = new NhibernateManager();
+			}
+
+			Context.Items.Add("hibernateSession", nhibernateManager.GetSession());
+		}
+
+		protected void Application_EndRequest(object sender, EventArgs e)
+		{
+			//((NHibernate.ISession)Context.Items["hibernateSession"]).Close();
 		}
 	}
 }

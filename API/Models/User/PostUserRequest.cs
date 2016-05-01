@@ -11,7 +11,7 @@ namespace iGO.API.Models
 	{
 		public string facebookToken { get; set; }
 
-		public override User GetEntity()
+		public override User GetEntity(NHibernate.ISession session)
 		{
 			User User = new User();
 

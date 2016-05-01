@@ -6,7 +6,7 @@ namespace iGO.API.Models
 	{
 		public virtual string Version { get; set; }
 
-		public abstract T GetEntity();
+		public abstract T GetEntity(NHibernate.ISession session);
 	}
 
 	public interface BaseRequest

@@ -3,6 +3,7 @@ using System.Reflection;
 using System.Configuration;
 
 using NHibernate;
+using NHibernate.Context;
 using NHibernate.Tool.hbm2ddl;
 
 using FluentNHibernate.Cfg.Db;
@@ -12,18 +13,20 @@ namespace iGO.Repositories.Configuration
 {
 	public class NhibernateManager
 	{
-		private static ISession Session { get; set; }
+		public ISessionFactory SessionFactory { get; set; }
 
-		public static void CreateDatabase()
+		//private ISession Session { get; set; }
+
+		public void CreateDatabase()
 		{
 			GetSession().CreateSQLQuery("DROP DATABASE IF EXISTS `iGO`; CREATE DATABASE `iGO`;").UniqueResult();
 
-			if (Session != null)
+			/*if (Session != null)
 			{
 				Session.Close();
 
 				Session = null;
-			}
+			}*/
 
 			Fluently.Configure()
 				.Database(
@@ -37,11 +40,11 @@ namespace iGO.Repositories.Configuration
 				.BuildSessionFactory();
 		}
 
-		public static ISession GetSession()
+		public ISessionFactory GetSessionFactory()
 		{
-			if (Session == null || !Session.IsOpen)
+			if (SessionFactory == null)
 			{
-				Session = Fluently.Configure()
+				SessionFactory = Fluently.Configure()
 					.Database(
 						MySQLConfiguration.Standard.ConnectionString(
 							ConfigurationManager.ConnectionStrings["DataConnectionSting"].ConnectionString
@@ -49,11 +52,36 @@ namespace iGO.Repositories.Configuration
 					)
 					.Mappings(m => m.FluentMappings.AddFromAssembly(Assembly.GetExecutingAssembly()))
 					.ExposeConfiguration(cfg => cfg.SetProperty(NHibernate.Cfg.Environment.CommandTimeout, "180"))
-					.BuildSessionFactory()
-					.OpenSession();
+					.BuildSessionFactory();
 			}
 
-			return Session;
+			return SessionFactory;
+		}
+
+		public ISession GetSession()
+		{
+			/*if (Session == null || !Session.IsOpen)
+			{
+				Session = */
+					return GetSessionFactory().OpenSession();
+			/*}
+
+			return Session;*/
+		}
+
+		public void CloseSession()
+		{
+			/*if (Session != null && Session.IsOpen)
+			{
+				ITransaction Transaction = Session.Transaction;
+
+				if (Transaction != null && Transaction.IsActive)
+				{
+					Transaction.Commit();
+				}
+
+				Session.Close();
+			}*/
 		}
 	}
 }

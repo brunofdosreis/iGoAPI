@@ -42,7 +42,8 @@ namespace ServiceStack.ServiceInterface
 			var authKey = req.Headers["Auth-Key"];
 
 			if (!authKey.IsNullOrEmpty() &&
-				new BaseRepository<User>().List(x => x.FacebookToken == authKey).Any()) {
+				new BaseRepository<User>(((NHibernate.ISession)req.Items["hibernateSession"]))
+					.List(x => x.FacebookToken == authKey).Any()) {
 
 				try {
 					

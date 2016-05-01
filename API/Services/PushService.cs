@@ -18,18 +18,18 @@ namespace iGO.API.Services
 	{
 		public object Put(PutPushRequest Request)
 		{
-			DeviceToken deviceToken = Request.GetEntity();
+			DeviceToken deviceToken = Request.GetEntity(((NHibernate.ISession)base.Request.Items["hibernateSession"]));
 
-			deviceToken.User = GetAuthenticatedUser();
+			deviceToken.User = GetAuthenticatedUser(((NHibernate.ISession)base.Request.Items["hibernateSession"]));
 
-			List<DeviceToken> deviceTokens = new BaseRepository<DeviceToken>().List(x => 
+			List<DeviceToken> deviceTokens = new BaseRepository<DeviceToken>(((NHibernate.ISession)base.Request.Items["hibernateSession"])).List(x => 
 				x.Platform == deviceToken.Platform
 					&& x.Token == deviceToken.Token
 			).ToList();
 
 			if (deviceTokens == null || !deviceTokens.Any())
 			{
-				deviceToken.Save();
+				deviceToken.Save(((NHibernate.ISession)base.Request.Items["hibernateSession"]));
 			}
 
 			return new BaseResponse();
@@ -37,18 +37,18 @@ namespace iGO.API.Services
 
 		public object Delete(DeletePushRequest Request)
 		{
-			DeviceToken deviceToken = Request.GetEntity();
+			DeviceToken deviceToken = Request.GetEntity(((NHibernate.ISession)base.Request.Items["hibernateSession"]));
 
-			deviceToken.User = GetAuthenticatedUser();
+			deviceToken.User = GetAuthenticatedUser(((NHibernate.ISession)base.Request.Items["hibernateSession"]));
 
-			List<DeviceToken> deviceTokens = new BaseRepository<DeviceToken>().List(x => 
+			List<DeviceToken> deviceTokens = new BaseRepository<DeviceToken>(((NHibernate.ISession)base.Request.Items["hibernateSession"])).List(x => 
 				x.Platform == deviceToken.Platform
 				&& x.Token == deviceToken.Token
 			).ToList();
 
 			if (deviceTokens != null && deviceTokens.Any())
 			{
-				deviceTokens.First().Delete();
+				deviceTokens.First().Delete(((NHibernate.ISession)base.Request.Items["hibernateSession"]));
 			}
 
 			return new BaseResponse();

@@ -12,11 +12,12 @@ namespace iGO.API.Services
 {
 	public class BaseService : Service
 	{
-		public User GetAuthenticatedUser()
+		public User GetAuthenticatedUser(NHibernate.ISession session)
 		{
 			string FacebookToken = base.Request.Headers.Get("Auth-Key");
 
-			return new BaseRepository<User>().List(x => x.FacebookToken == FacebookToken).FirstOrDefault();
+			return new BaseRepository<User>(session)
+				.List(x => x.FacebookToken == FacebookToken).FirstOrDefault();
 		}
 
 		public BaseService ()

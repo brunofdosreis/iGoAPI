@@ -19,7 +19,7 @@ namespace iGO.API.Models
 
 		public string name { get; set; }
 
-		public override Hello GetEntity()
+		public override Hello GetEntity(NHibernate.ISession session)
 		{
 			Hello Hello = new Hello();
 

@@ -12,7 +12,7 @@ namespace iGO.API.Models
 		public int limit { get; set; }
 		public int offset { get; set; }
 
-		public override Object GetEntity()
+		public override Object GetEntity(NHibernate.ISession session)
 		{
 			return null;
 		}

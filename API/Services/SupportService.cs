@@ -15,11 +15,12 @@ namespace iGO.API.Services
 	{
 		public object Any(SupportRequest request)
 		{
-			Support Support = request.GetEntity();
+			Support Support = request.GetEntity(((NHibernate.ISession)base.Request.Items["hibernateSession"]));
 
 			string Platform = Support.Platform;
 
-			List<Support> _Support = new BaseRepository<Support>().List (x => x.Platform == Platform).ToList();
+			List<Support> _Support = new BaseRepository<Support>(((NHibernate.ISession)base.Request.Items["hibernateSession"]))
+				.List (x => x.Platform == Platform).ToList();
 
 			return new SupportResponse(_Support);
 		}

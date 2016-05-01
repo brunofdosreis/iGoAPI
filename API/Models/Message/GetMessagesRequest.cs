@@ -13,7 +13,7 @@ namespace iGO.API.Models
 		public string date { get; set; }
 		public int limit { get; set; }
 
-		public override Object GetEntity()
+		public override Object GetEntity(NHibernate.ISession session)
 		{
 			return null;
 		}
