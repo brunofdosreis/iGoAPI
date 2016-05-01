@@ -59,9 +59,17 @@ namespace iGO.API.Services
 						IsDefault = true,
 						User = User
 					});
-
+							
 					User.UserPictures = UserPictures;
 
+					if (User.UserPreferences == null)
+					{
+						User.UserPreferences = new UserPreferences() {
+								AgeStart = 0,
+								AgeEnd = 0,
+							Gender = new string []{}
+						};
+					}
 				}
 				else
 				{

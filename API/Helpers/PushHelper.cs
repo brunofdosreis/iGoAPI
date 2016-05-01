@@ -122,9 +122,12 @@ namespace iGO.API.Helpers
 		private static void sendAPNS(string[] deviceTokens, string text, string type)
 		{
 			// Configuration (NOTE: .pfx can also be used here)
-			var config = new ApnsConfiguration (ApnsConfiguration.ApnsServerEnvironment.Sandbox, 
-				"Certificates_Dev_iGoDev.p12", "iGo@2016");
+			//var config = new ApnsConfiguration (ApnsConfiguration.ApnsServerEnvironment.Sandbox, 
+			//	"Certificates_Dev_iGoDev.p12", "iGo@2016");
 
+			var config = new ApnsConfiguration (ApnsConfiguration.ApnsServerEnvironment.Production, 
+				"Certificates_Prod_AhHoc_iGo.p12", "iGo@2016");
+			
 			// Create a new broker
 			var apnsBroker = new ApnsServiceBroker (config);
 
