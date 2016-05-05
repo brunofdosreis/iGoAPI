@@ -43,9 +43,8 @@ namespace iGO.API.Services
 
 				string after = "";
 
-				if (Request.offset == 0 &&
-					(user.Updated > DateTime.Now.AddMinutes(15)
-						|| (user.Event == null || user.Event.Count() == 0)))
+				if ((Request.offset == 0) &&
+					((user.Updated < DateTime.Now.AddMinutes(15)) || (user.Event == null || user.Event.Count() == 0)))
 				{
 					do
 					{

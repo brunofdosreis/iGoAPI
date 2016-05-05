@@ -21,8 +21,30 @@ namespace iGO.API.Services
 		{
 			Match match = new Match().Get(Request.matchID, ((NHibernate.ISession)base.Request.Items["hibernateSession"]));
 
+			/*
 			IEnumerable<Message> message = new BaseRepository<Message>(((NHibernate.ISession)base.Request.Items["hibernateSession"])).List (x => 
 				x.Match == match 
+				&& x.Created >= DateTime.ParseExact(
+					Request.date, "yyyy-MM-dd'T'HH:mm:ss'GMT'zzz", CultureInfo.InvariantCulture)
+			);
+			*/
+
+			IQueryable<Match> Matches = new BaseRepository<Match>(((NHibernate.ISession)base.Request.Items["hibernateSession"])).List(x => 
+				x.SecondUser != null
+				&&
+				(
+					(x.FirstUser == match.FirstUser && x.SecondUser == match.SecondUser)
+					||
+					(x.FirstUser == match.SecondUser && x.SecondUser == match.FirstUser)
+				)
+				&&
+				(x.IsFirstUserLike && x.IsSecondUserLike != null && x.IsSecondUserLike == true)
+			).OrderBy(y => y.Created);
+
+			Match matchFirst = Matches.FirstOrDefault();
+
+			IEnumerable<Message> message = new BaseRepository<Message>(((NHibernate.ISession)base.Request.Items["hibernateSession"])).List (x => 
+				x.Match == matchFirst 
 				&& x.Created >= DateTime.ParseExact(
 					Request.date, "yyyy-MM-dd'T'HH:mm:ss'GMT'zzz", CultureInfo.InvariantCulture)
 			);
@@ -51,7 +73,12 @@ namespace iGO.API.Services
 
 			if (deviceToken != null && deviceToken.Any ())
 			{
-				PushHelper.SendNotification(deviceToken, "Nova mensagem de " + message.FromUser.Name, "message");
+				try
+				{
+					PushHelper.SendNotification(deviceToken, "Nova mensagem de " + message.FromUser.Name, "message");
+				}
+				catch {
+				}
 			}
 
 			return new BaseResponse();

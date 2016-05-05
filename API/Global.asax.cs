@@ -128,7 +128,8 @@ namespace iGO.API
 							throw exception;
 						}
 
-						throw new HttpError(HttpStatusCode.InternalServerError);
+						//throw new HttpError(HttpStatusCode.InternalServerError);
+						throw exception;
 					});
 
 				//Handle Unhandled Exceptions occurring outside of Services
