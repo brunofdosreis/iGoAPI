@@ -61,6 +61,7 @@ namespace iGO.API.Services
 				}
 			}
 
+			/*
 			IQueryable<Match> Matches = new BaseRepository<Match>(((NHibernate.ISession)base.Request.Items["hibernateSession"])).List(x => 
 				x.SecondUser != null
 				&&
@@ -72,8 +73,9 @@ namespace iGO.API.Services
 				&&
 				(x.IsFirstUserLike && x.IsSecondUserLike != null && x.IsSecondUserLike == true)
 			).OrderBy(y => y.Created);
+			*/
 
-			return new PostMatchLikeResponse(Matches.FirstOrDefault());
+			return new PostMatchLikeResponse(match);
 		}
 
 		public object Get(GetMatchesRequest Request)

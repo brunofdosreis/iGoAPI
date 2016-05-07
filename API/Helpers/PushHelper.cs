@@ -125,6 +125,9 @@ namespace iGO.API.Helpers
 			//var config = new ApnsConfiguration (ApnsConfiguration.ApnsServerEnvironment.Sandbox, 
 			//	"Certificates_Dev_iGoDev.p12", "iGo@2016");
 
+			//var config = new ApnsConfiguration (ApnsConfiguration.ApnsServerEnvironment.Sandbox, 
+			//	"Certificates_Prod_AhHoc_iGo.p12", "iGo@2016");
+			
 			var config = new ApnsConfiguration (ApnsConfiguration.ApnsServerEnvironment.Production, 
 				"Certificates_Prod_AhHoc_iGo.p12", "iGo@2016");
 			
@@ -165,9 +168,17 @@ namespace iGO.API.Helpers
 
 			foreach (var deviceToken in deviceTokens) {
 				// Queue a notification to send
+				/*
 				apnsBroker.QueueNotification (new ApnsNotification {
 					DeviceToken = deviceToken,
 					Payload = JObject.Parse ("{\"aps\":{\"alert\":\"" + text + "\", \"badge\" : \"1\" }, \"type\": \"" + type + "\"}")
+				});
+				*/
+
+				JObject payload = JObject.Parse ("{\"aps\":{\"alert\":\"" + text + "\", \"badge\" : 1 }, \"type\": \"" + type + "\"}");
+				apnsBroker.QueueNotification (new ApnsNotification {
+					DeviceToken = deviceToken,
+					Payload = payload
 				});
 			}
 

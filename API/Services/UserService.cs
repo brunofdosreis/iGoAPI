@@ -97,7 +97,7 @@ namespace iGO.API.Services
 				User = base.GetAuthenticatedUser(((NHibernate.ISession)base.Request.Items["hibernateSession"]));
 			}
 
-			return new GetUserResponse(User);
+			return new GetUserResponse(User, ((NHibernate.ISession)base.Request.Items["hibernateSession"]));
 		}
 
 		[CustomAuthenticateToken]

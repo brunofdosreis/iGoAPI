@@ -48,8 +48,16 @@ namespace iGO.API.Services
 				{
 					do
 					{
+						//me?fields[0]=events{id,name,description,start_time,attending,interested,rsvp_status,rsvp_status=attending,rsvp_status=interested}&start_date=(1462574329)&end_date=(1462574329)
+						/*
 						dynamic me = client.Get("me", new { fields = new[] {
 								"events.since(" + unixTimestamp + ").limit(200)" + after + "{id,name,description,start_time,end_time,rsvp_status}"
+							}
+						});
+						*/
+
+						dynamic me = client.Get("me", new { fields = new[] {
+								"events.limit(200)" + ".start_date=(" + unixTimestamp + ").end_date=(" + unixTimestamp + ")" + after + "{id,name,description,start_time,end_time,rsvp_status}"
 							}
 						});
 

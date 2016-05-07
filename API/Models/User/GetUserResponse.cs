@@ -1,7 +1,14 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 
+using ServiceStack;
+using ServiceStack.ServiceInterface;
+
+using iGO.API.Models;
 using iGO.Domain.Entities;
+using iGO.Repositories;
+using iGO.Repositories.Extensions;
 
 namespace iGO.API.Models
 {
@@ -9,9 +16,9 @@ namespace iGO.API.Models
 	{
 		public new Object data { get; set; }
 
-		public GetUserResponse(User User) : base()
+		public GetUserResponse(User User, NHibernate.ISession session) : base()
 		{
-			this.data = new Object(User);
+			this.data = new Object(User, session);
 		}
 
 		public class Object
@@ -19,14 +26,17 @@ namespace iGO.API.Models
 			public string email { get; set; }
 			public string name { get; set; }
 			public string gender { get; set; }
+			public string birthday { get; set; }
 			public IEnumerable<Picture> pictures { get; set; }
-			public IEnumerable<Event> events { get; set; }
+			//public IEnumerable<Event> events { get; set; }
+			public int events { get; set; }
 
-			public Object(User User)
+			public Object(User User, NHibernate.ISession session)
 			{
 				email = User.Email;
 				name = User.Name;
 				gender = User.Gender;
+				birthday = User.Birthday.ToString ("yyyy-MM-dd'T'HH:mm:ss'GMT'zzz");
 
 				List<Picture> _pictures = new List<Picture>();
 
@@ -43,6 +53,7 @@ namespace iGO.API.Models
 
 				pictures = _pictures;
 
+				/*
 				List<Event> _events = new List<Event>();
 
 				if (User.Event != null)
@@ -59,8 +70,9 @@ namespace iGO.API.Models
 						);
 					}
 				}
+				*/
 
-				events = _events;
+				events = new BaseRepository<Event>(session).List(x => x.User.Any(y => y.Id == User.Id)).Count();
 			}
 
 			public class Picture
@@ -70,6 +82,7 @@ namespace iGO.API.Models
 				public bool isDefault { get; set; }
 			}
 
+			/*
 			public class Event
 			{
 				public int ID { get; set; }
@@ -77,6 +90,7 @@ namespace iGO.API.Models
 				public string desciption { get; set; }
 				public string date { get; set; }
 			}
+			*/
 		}
 	}
 }

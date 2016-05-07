@@ -41,19 +41,19 @@ namespace iGO.API.Services
 				(x.IsFirstUserLike && x.IsSecondUserLike != null && x.IsSecondUserLike == true)
 			).OrderBy(y => y.Created);
 
-			Match matchFirst = Matches.FirstOrDefault();
+			//Match matchFirst = Matches.FirstOrDefault();
 
 			IEnumerable<Message> message = new BaseRepository<Message>(((NHibernate.ISession)base.Request.Items["hibernateSession"])).List (x => 
-				x.Match == matchFirst 
+				Matches.Contains(x.Match)
 				&& x.Created >= DateTime.ParseExact(
 					Request.date, "yyyy-MM-dd'T'HH:mm:ss'GMT'zzz", CultureInfo.InvariantCulture)
 			);
-
+			/*
 			if (Request.limit > 0)
 			{
 				message = message.Take(Request.limit);
 			}
-
+			*/
 			return new GetMessagesResponse(message.ToArray());
 		}
 
